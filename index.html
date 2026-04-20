@@ -43,7 +43,7 @@
       border-color: #2a2f3a;
       margin: 24px 0;
     }
-    /* Стрелки навигации */
+    /* Навигация */
     .nav-arrow {
       position: fixed;
       top: 50%;
@@ -58,15 +58,32 @@
       border-radius: 8px;
       transition: background 0.2s;
     }
-    .nav-arrow:hover {
-      background: rgba(0,0,0,0.8);
-    }
-    .nav-left {
-      left: 20px;
-    }
-    .nav-right {
+    .nav-arrow:hover { background: rgba(0,0,0,0.8); }
+    .nav-left { left: 20px; }
+    .nav-right { right: 20px; }
+    
+    /* Кнопки зума */
+    .zoom-controls {
+      position: fixed;
+      bottom: 20px;
       right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 10000;
     }
+    .zoom-btn {
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    .zoom-btn:hover { background: rgba(0,0,0,0.9); }
+    
     .image-counter {
       position: fixed;
       bottom: 20px;
@@ -79,6 +96,18 @@
       font-size: 14px;
       z-index: 10000;
       font-family: monospace;
+    }
+    
+    .zoom-indicator {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.5);
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: white;
+      z-index: 10000;
     }
   </style>
 </head>
@@ -96,91 +125,126 @@
   <div class="card">
     <div class="section-title">Skin</div>
     
-    <!-- Проект Binah -->
     <div class="project-name">Binah</div>
     <div class="meta">Work samples — for Wargaming viewing only</div>
     <div class="grid">
-      <img src="1.gif" alt="Binah skin preview 1" data-project="binah" data-index="0" onclick="openLightbox(this.src, 'binah', 0)">
-      <img src="2.gif" alt="Binah skin preview 2" data-project="binah" data-index="1" onclick="openLightbox(this.src, 'binah', 1)">
-      <img src="3.gif" alt="Binah skin preview 3" data-project="binah" data-index="2" onclick="openLightbox(this.src, 'binah', 2)">
+      <img src="1.gif" alt="Binah 1" data-fullidx="0" onclick="openLightbox(0)">
+      <img src="2.gif" alt="Binah 2" data-fullidx="1" onclick="openLightbox(1)">
+      <img src="3.gif" alt="Binah 3" data-fullidx="2" onclick="openLightbox(2)">
     </div>
-
     <hr>
 
-    <!-- Проект Corona -->
     <div class="project-name">Corona</div>
     <div class="meta">Work samples — for Wargaming viewing only</div>
     <div class="grid">
-      <img src="4.gif" alt="Corona skin preview 1" data-project="corona" data-index="0" onclick="openLightbox(this.src, 'corona', 0)">
-      <img src="5.gif" alt="Corona skin preview 2" data-project="corona" data-index="1" onclick="openLightbox(this.src, 'corona', 1)">
-      <img src="6.gif" alt="Corona skin preview 3" data-project="corona" data-index="2" onclick="openLightbox(this.src, 'corona', 2)">
+      <img src="4.gif" alt="Corona 1" data-fullidx="3" onclick="openLightbox(3)">
+      <img src="5.gif" alt="Corona 2" data-fullidx="4" onclick="openLightbox(4)">
+      <img src="6.gif" alt="Corona 3" data-fullidx="5" onclick="openLightbox(5)">
     </div>
-
     <hr>
 
-    <!-- Проект Corals -->
     <div class="project-name">Corals</div>
     <div class="meta">Work samples — for Wargaming viewing only</div>
     <div class="grid">
-      <img src="7.gif" alt="Corals skin preview 1" data-project="corals" data-index="0" onclick="openLightbox(this.src, 'corals', 0)">
-      <img src="8.gif" alt="Corals skin preview 2" data-project="corals" data-index="1" onclick="openLightbox(this.src, 'corals', 1)">
-      <img src="9.gif" alt="Corals skin preview 3" data-project="corals" data-index="2" onclick="openLightbox(this.src, 'corals', 2)">
+      <img src="7.gif" alt="Corals 1" data-fullidx="6" onclick="openLightbox(6)">
+      <img src="8.gif" alt="Corals 2" data-fullidx="7" onclick="openLightbox(7)">
+      <img src="9.gif" alt="Corals 3" data-fullidx="8" onclick="openLightbox(8)">
+    </div>
+    <hr>
+
+    <div class="project-name">Blücher</div>
+    <div class="meta">Work samples — for Wargaming viewing only</div>
+    <div class="grid">
+      <img src="10.gif" alt="Blücher 1" data-fullidx="9" onclick="openLightbox(9)">
+      <img src="11.gif" alt="Blücher 2" data-fullidx="10" onclick="openLightbox(10)">
+      <img src="12.gif" alt="Blücher 3" data-fullidx="11" onclick="openLightbox(11)">
     </div>
   </div>
-
 </div>
 
 <script>
   const correctPw = "WG0070707";
 
-  // База данных изображений по проектам
-  const projectImages = {
-    binah: ["1.gif", "2.gif", "3.gif"],
-    corona: ["4.gif", "5.gif", "6.gif"],
-    corals: ["7.gif", "8.gif", "9.gif"]
-  };
+  // Все изображения в правильном порядке
+  const allImages = [
+    "1.gif", "2.gif", "3.gif",  // Binah
+    "4.gif", "5.gif", "6.gif",  // Corona
+    "7.gif", "8.gif", "9.gif",  // Corals
+    "10.gif", "11.gif", "12.gif"  // Blücher
+  ];
 
-  let currentProject = null;
   let currentIndex = 0;
+  let currentZoom = 1;
 
-  function openLightbox(src, project, index) {
-    currentProject = project;
+  function openLightbox(index) {
     currentIndex = index;
+    currentZoom = 1;
     const lb = document.getElementById("lightbox");
     const img = document.getElementById("lightbox-img");
-    img.src = src;
+    img.src = allImages[currentIndex];
+    img.style.transform = `scale(${currentZoom})`;
     lb.style.display = "flex";
     updateCounter();
+    updateZoomIndicator();
   }
 
   function closeLightbox() {
     document.getElementById("lightbox").style.display = "none";
-    currentProject = null;
   }
 
   function nextImage() {
-    if (!currentProject) return;
-    const images = projectImages[currentProject];
-    if (images.length === 0) return;
-    currentIndex = (currentIndex + 1) % images.length;
-    document.getElementById("lightbox-img").src = images[currentIndex];
+    currentIndex = (currentIndex + 1) % allImages.length;
+    currentZoom = 1;
+    document.getElementById("lightbox-img").src = allImages[currentIndex];
+    document.getElementById("lightbox-img").style.transform = `scale(${currentZoom})`;
     updateCounter();
+    updateZoomIndicator();
   }
 
   function prevImage() {
-    if (!currentProject) return;
-    const images = projectImages[currentProject];
-    if (images.length === 0) return;
-    currentIndex = (currentIndex - 1 + images.length) % images.length;
-    document.getElementById("lightbox-img").src = images[currentIndex];
+    currentIndex = (currentIndex - 1 + allImages.length) % allImages.length;
+    currentZoom = 1;
+    document.getElementById("lightbox-img").src = allImages[currentIndex];
+    document.getElementById("lightbox-img").style.transform = `scale(${currentZoom})`;
     updateCounter();
+    updateZoomIndicator();
+  }
+
+  function zoomIn() {
+    if (currentZoom < 4) {
+      if (currentZoom === 1) currentZoom = 2;
+      else if (currentZoom === 2) currentZoom = 4;
+      document.getElementById("lightbox-img").style.transform = `scale(${currentZoom})`;
+      updateZoomIndicator();
+    }
+  }
+
+  function zoomOut() {
+    if (currentZoom > 1) {
+      if (currentZoom === 4) currentZoom = 2;
+      else if (currentZoom === 2) currentZoom = 1;
+      document.getElementById("lightbox-img").style.transform = `scale(${currentZoom})`;
+      updateZoomIndicator();
+    }
+  }
+
+  function resetZoom() {
+    currentZoom = 1;
+    document.getElementById("lightbox-img").style.transform = `scale(1)`;
+    updateZoomIndicator();
   }
 
   function updateCounter() {
     const counter = document.getElementById("image-counter");
-    if (counter && currentProject) {
-      const images = projectImages[currentProject];
-      counter.textContent = `${currentIndex + 1} / ${images.length}`;
+    if (counter) {
+      counter.textContent = `${currentIndex + 1} / ${allImages.length}`;
+    }
+  }
+
+  function updateZoomIndicator() {
+    const indicator = document.getElementById("zoom-indicator");
+    if (indicator) {
+      indicator.textContent = `${currentZoom}x`;
     }
   }
 
@@ -194,7 +258,7 @@
     }
   }
 
-  // Обработка клавиш клавиатуры
+  // Обработка клавиатуры
   document.addEventListener("keydown", function(e) {
     const lb = document.getElementById("lightbox");
     if (lb.style.display === "flex") {
@@ -207,12 +271,34 @@
       } else if (e.key === "Escape") {
         closeLightbox();
         e.preventDefault();
+      } else if (e.key === "+" || e.key === "=") {
+        zoomIn();
+        e.preventDefault();
+      } else if (e.key === "-" || e.key === "_") {
+        zoomOut();
+        e.preventDefault();
+      } else if (e.key === "0") {
+        resetZoom();
+        e.preventDefault();
       }
     }
   });
+
+  // Зум колесиком мыши
+  document.addEventListener("wheel", function(e) {
+    const lb = document.getElementById("lightbox");
+    if (lb.style.display === "flex") {
+      if (e.deltaY < 0) {
+        zoomIn();
+      } else if (e.deltaY > 0) {
+        zoomOut();
+      }
+      e.preventDefault();
+    }
+  }, { passive: false });
 </script>
 
-<!-- Lightbox с навигацией -->
+<!-- Lightbox -->
 <div id="lightbox" onclick="closeLightbox()" style="
   display:none;
   position:fixed;
@@ -223,26 +309,28 @@
   justify-content: center;
   cursor: zoom-out;
 ">
-  <!-- Стрелка влево -->
   <div class="nav-arrow nav-left" onclick="event.stopPropagation(); prevImage();">◀</div>
   
-  <!-- Изображение -->
-  <img id="lightbox-img" src="" alt="" style="
-    max-width: 85vw;
-    max-height: 85vh;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0,0,0,.6);
-    cursor: default;
-  " onclick="event.stopPropagation();">
+  <div style="overflow: auto; max-width: 90vw; max-height: 90vh; display: flex; align-items: center; justify-content: center;">
+    <img id="lightbox-img" src="" alt="" style="
+      transition: transform 0.2s ease;
+      cursor: zoom-in;
+      max-width: none;
+      width: auto;
+      height: auto;
+    " onclick="event.stopPropagation(); zoomIn();">
+  </div>
   
-  <!-- Стрелка вправо -->
   <div class="nav-arrow nav-right" onclick="event.stopPropagation(); nextImage();">►</div>
   
-  <!-- Счётчик изображений -->
+  <div class="zoom-controls">
+    <button class="zoom-btn" onclick="event.stopPropagation(); zoomOut();">−</button>
+    <button class="zoom-btn" onclick="event.stopPropagation(); resetZoom();">1x</button>
+    <button class="zoom-btn" onclick="event.stopPropagation(); zoomIn();">+</button>
+  </div>
+  
   <div id="image-counter" class="image-counter"></div>
+  <div id="zoom-indicator" class="zoom-indicator">1x</div>
 </div>
 
 </body>
