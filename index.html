@@ -12,13 +12,14 @@
     button { cursor:pointer; background:#7aa2ff; color:#0f1115; font-weight:bold; }
     input { background:#0f1115; color:#e6e6e6; border:1px solid #2a2f3a; margin-right:8px; width:180px; }
     .message { margin-top: 40px; font-size: 18px; color:#9aa4b2; }
+    .warning { color:#ff7a7a; font-size: 14px; margin-top: 16px; border-top: 1px solid #2a2f3a; padding-top: 16px; }
   </style>
 </head>
 <body>
 
 <div id="login" class="login">
-  <h2>NAVA Studio Portfolio</h2>
-  <p>Private NDA-safe portfolio</p>
+  <h2>Приватное портфолио</h2>
+  <p><strong>Нельзя передавать 3-м лицам. Только для просмотра компании Wargaming.</strong></p>
   <input type="password" id="pw" placeholder="Password" />
   <button onclick="checkPw()">Enter</button>
 </div>
@@ -31,7 +32,7 @@
 </div>
 
 <script>
-  const correctPw = "0070707";
+  const correctPw = "WG0070707";
 
   function checkPw() {
     const input = document.getElementById("pw").value;
