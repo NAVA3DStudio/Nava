@@ -62,28 +62,6 @@
     .nav-left { left: 20px; }
     .nav-right { right: 20px; }
     
-    /* Кнопки зума */
-    .zoom-controls {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      display: flex;
-      gap: 10px;
-      z-index: 10000;
-    }
-    .zoom-btn {
-      background: rgba(0,0,0,0.6);
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.2s;
-    }
-    .zoom-btn:hover { background: rgba(0,0,0,0.9); }
-    
     .image-counter {
       position: fixed;
       bottom: 20px;
@@ -96,18 +74,6 @@
       font-size: 14px;
       z-index: 10000;
       font-family: monospace;
-    }
-    
-    .zoom-indicator {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: rgba(0,0,0,0.5);
-      padding: 5px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      color: white;
-      z-index: 10000;
     }
   </style>
 </head>
@@ -196,37 +162,110 @@
       <img src="32.gif" alt="Ships 16" data-fullidx="31" onclick="openLightbox(31)">
     </div>
   </div>
+
+  <!-- РАЗДЕЛ TANKS -->
+  <div class="card">
+    <div class="section-title">Tanks</div>
+    
+    <div class="project-name">E-50</div>
+    <div class="meta">Work samples — for Wargaming viewing only</div>
+    <div class="grid">
+      <img src="E-50_1.jpg" alt="E-50 1" data-fullidx="32" onclick="openLightbox(32)">
+      <img src="E-50_2.jpg" alt="E-50 2" data-fullidx="33" onclick="openLightbox(33)">
+      <img src="E-50_3.jpg" alt="E-50 3" data-fullidx="34" onclick="openLightbox(34)">
+      <img src="E-50_4.jpg" alt="E-50 4" data-fullidx="35" onclick="openLightbox(35)">
+      <img src="E-50_5.jpg" alt="E-50 5" data-fullidx="36" onclick="openLightbox(36)">
+    </div>
+    <hr>
+
+    <div class="project-name">Su-152</div>
+    <div class="meta">Work samples — for Wargaming viewing only</div>
+    <div class="grid">
+      <img src="Su-152_1.jpg" alt="Su-152 1" data-fullidx="37" onclick="openLightbox(37)">
+      <img src="Su-152_2.jpg" alt="Su-152 2" data-fullidx="38" onclick="openLightbox(38)">
+      <img src="Su-152_3.jpg" alt="Su-152 3" data-fullidx="39" onclick="openLightbox(39)">
+      <img src="Su-152_4.jpg" alt="Su-152 4" data-fullidx="40" onclick="openLightbox(40)">
+      <img src="Su-152_5.jpg" alt="Su-152 5" data-fullidx="41" onclick="openLightbox(41)">
+    </div>
+    <hr>
+
+    <div class="project-name">Churchill VII</div>
+    <div class="meta">Work samples — for Wargaming viewing only</div>
+    <div class="grid">
+      <img src="Churchill_VII_1.jpg" alt="Churchill VII 1" data-fullidx="42" onclick="openLightbox(42)">
+      <img src="Churchill_VII_2.jpg" alt="Churchill VII 2" data-fullidx="43" onclick="openLightbox(43)">
+      <img src="Churchill_VII_3.jpg" alt="Churchill VII 3" data-fullidx="44" onclick="openLightbox(44)">
+      <img src="Churchill_VII_4.jpg" alt="Churchill VII 4" data-fullidx="45" onclick="openLightbox(45)">
+      <img src="Churchill_VII_5.jpg" alt="Churchill VII 5" data-fullidx="46" onclick="openLightbox(46)">
+    </div>
+    <hr>
+
+    <div class="project-name">Comet</div>
+    <div class="meta">Work samples — for Wargaming viewing only</div>
+    <div class="grid">
+      <img src="Comet_1.jpg" alt="Comet 1" data-fullidx="47" onclick="openLightbox(47)">
+      <img src="Comet_2.jpg" alt="Comet 2" data-fullidx="48" onclick="openLightbox(48)">
+      <img src="Comet_3.jpg" alt="Comet 3" data-fullidx="49" onclick="openLightbox(49)">
+      <img src="Comet_4.jpg" alt="Comet 4" data-fullidx="50" onclick="openLightbox(50)">
+      <img src="Comet_5.jpg" alt="Comet 5" data-fullidx="51" onclick="openLightbox(51)">
+    </div>
+    <hr>
+
+    <div class="project-name">Wz-44</div>
+    <div class="meta">Work samples — for Wargaming viewing only</div>
+    <div class="grid">
+      <img src="Wz_44_1.jpg" alt="Wz-44 1" data-fullidx="52" onclick="openLightbox(52)">
+      <img src="Wz_44_2.jpg" alt="Wz-44 2" data-fullidx="53" onclick="openLightbox(53)">
+      <img src="Wz_44_3.jpg" alt="Wz-44 3" data-fullidx="54" onclick="openLightbox(54)">
+      <img src="Wz_44_4.jpg" alt="Wz-44 4" data-fullidx="55" onclick="openLightbox(55)">
+      <img src="Wz_44_5.jpg" alt="Wz-44 5" data-fullidx="56" onclick="openLightbox(56)">
+    </div>
+    <hr>
+
+    <div class="project-name">Cruiser MK III</div>
+    <div class="meta">Work samples — for Wargaming viewing only</div>
+    <div class="grid">
+      <img src="Cruiser_MK3_1.jpg" alt="Cruiser MK3 1" data-fullidx="57" onclick="openLightbox(57)">
+      <img src="Cruiser_MK3_2.jpg" alt="Cruiser MK3 2" data-fullidx="58" onclick="openLightbox(58)">
+      <img src="Cruiser_MK3_3.jpg" alt="Cruiser MK3 3" data-fullidx="59" onclick="openLightbox(59)">
+      <img src="Cruiser_MK3_4.jpg" alt="Cruiser MK3 4" data-fullidx="60" onclick="openLightbox(60)">
+      <img src="Cruiser_MK3_5.jpg" alt="Cruiser MK3 5" data-fullidx="61" onclick="openLightbox(61)">
+    </div>
+  </div>
 </div>
 
 <script>
   const correctPw = "WG0070707";
 
-  // Все изображения в правильном порядке (32 штуки: 1-16 Skin, 17-32 Ships)
+  // Все изображения в правильном порядке (62 штуки)
   const allImages = [
     // Skin раздел (16 изображений)
-    "1.gif", "2.gif", "3.gif",   // Binah
-    "4.gif", "5.gif", "6.gif",   // Corona
-    "7.gif", "8.gif", "9.gif",   // Corals
-    "10.gif", "11.gif", "12.gif", // Blücher
-    "13.gif", "14.gif", "15.gif", "16.gif", // Three Kingdoms
+    "1.gif", "2.gif", "3.gif",
+    "4.gif", "5.gif", "6.gif",
+    "7.gif", "8.gif", "9.gif",
+    "10.gif", "11.gif", "12.gif",
+    "13.gif", "14.gif", "15.gif", "16.gif",
     // Ships раздел (16 изображений)
     "17.gif", "18.gif", "19.gif", "20.gif", "21.gif", "22.gif", "23.gif", "24.gif",
-    "25.gif", "26.gif", "27.gif", "28.gif", "29.gif", "30.gif", "31.gif", "32.gif"
+    "25.gif", "26.gif", "27.gif", "28.gif", "29.gif", "30.gif", "31.gif", "32.gif",
+    // Tanks раздел (30 изображений)
+    "E-50_1.jpg", "E-50_2.jpg", "E-50_3.jpg", "E-50_4.jpg", "E-50_5.jpg",
+    "Su-152_1.jpg", "Su-152_2.jpg", "Su-152_3.jpg", "Su-152_4.jpg", "Su-152_5.jpg",
+    "Churchill_VII_1.jpg", "Churchill_VII_2.jpg", "Churchill_VII_3.jpg", "Churchill_VII_4.jpg", "Churchill_VII_5.jpg",
+    "Comet_1.jpg", "Comet_2.jpg", "Comet_3.jpg", "Comet_4.jpg", "Comet_5.jpg",
+    "Wz_44_1.jpg", "Wz_44_2.jpg", "Wz_44_3.jpg", "Wz_44_4.jpg", "Wz_44_5.jpg",
+    "Cruiser_MK3_1.jpg", "Cruiser_MK3_2.jpg", "Cruiser_MK3_3.jpg", "Cruiser_MK3_4.jpg", "Cruiser_MK3_5.jpg"
   ];
 
   let currentIndex = 0;
-  let currentZoom = 1;  // 1 = оригинальный размер (x0 по логике пользователя)
 
   function openLightbox(index) {
     currentIndex = index;
-    currentZoom = 1;
     const lb = document.getElementById("lightbox");
     const img = document.getElementById("lightbox-img");
     img.src = allImages[currentIndex];
-    img.style.transform = `scale(${currentZoom})`;
     lb.style.display = "flex";
     updateCounter();
-    updateZoomIndicator();
   }
 
   function closeLightbox() {
@@ -235,57 +274,20 @@
 
   function nextImage() {
     currentIndex = (currentIndex + 1) % allImages.length;
-    currentZoom = 1;
     document.getElementById("lightbox-img").src = allImages[currentIndex];
-    document.getElementById("lightbox-img").style.transform = `scale(${currentZoom})`;
     updateCounter();
-    updateZoomIndicator();
   }
 
   function prevImage() {
     currentIndex = (currentIndex - 1 + allImages.length) % allImages.length;
-    currentZoom = 1;
     document.getElementById("lightbox-img").src = allImages[currentIndex];
-    document.getElementById("lightbox-img").style.transform = `scale(${currentZoom})`;
     updateCounter();
-    updateZoomIndicator();
-  }
-
-  function zoomIn() {
-    if (currentZoom < 2) {
-      currentZoom = 2;
-      document.getElementById("lightbox-img").style.transform = `scale(${currentZoom})`;
-      updateZoomIndicator();
-    }
-  }
-
-  function zoomOut() {
-    if (currentZoom > 1) {
-      currentZoom = 1;
-      document.getElementById("lightbox-img").style.transform = `scale(${currentZoom})`;
-      updateZoomIndicator();
-    }
-  }
-
-  function resetZoom() {
-    currentZoom = 1;
-    document.getElementById("lightbox-img").style.transform = `scale(1)`;
-    updateZoomIndicator();
   }
 
   function updateCounter() {
     const counter = document.getElementById("image-counter");
     if (counter) {
       counter.textContent = `${currentIndex + 1} / ${allImages.length}`;
-    }
-  }
-
-  function updateZoomIndicator() {
-    const indicator = document.getElementById("zoom-indicator");
-    if (indicator) {
-      // Показываем x0 для оригинального размера, x2 для увеличенного
-      const displayZoom = currentZoom === 1 ? "0" : "2";
-      indicator.textContent = `${displayZoom}x`;
     }
   }
 
@@ -299,7 +301,7 @@
     }
   }
 
-  // Обработка клавиатуры
+  // Обработка клавиатуры (только стрелки и Escape)
   document.addEventListener("keydown", function(e) {
     const lb = document.getElementById("lightbox");
     if (lb.style.display === "flex") {
@@ -312,34 +314,12 @@
       } else if (e.key === "Escape") {
         closeLightbox();
         e.preventDefault();
-      } else if (e.key === "+" || e.key === "=") {
-        zoomIn();
-        e.preventDefault();
-      } else if (e.key === "-" || e.key === "_") {
-        zoomOut();
-        e.preventDefault();
-      } else if (e.key === "0") {
-        resetZoom();
-        e.preventDefault();
       }
     }
   });
-
-  // Зум колесиком мыши
-  document.addEventListener("wheel", function(e) {
-    const lb = document.getElementById("lightbox");
-    if (lb.style.display === "flex") {
-      if (e.deltaY < 0) {
-        zoomIn();
-      } else if (e.deltaY > 0) {
-        zoomOut();
-      }
-      e.preventDefault();
-    }
-  }, { passive: false });
 </script>
 
-<!-- Lightbox -->
+<!-- Lightbox (без зума) -->
 <div id="lightbox" onclick="closeLightbox()" style="
   display:none;
   position:fixed;
@@ -352,26 +332,20 @@
 ">
   <div class="nav-arrow nav-left" onclick="event.stopPropagation(); prevImage();">◀</div>
   
-  <div style="overflow: auto; max-width: 90vw; max-height: 90vh; display: flex; align-items: center; justify-content: center;">
-    <img id="lightbox-img" src="" alt="" style="
-      transition: transform 0.2s ease;
-      cursor: zoom-in;
-      max-width: none;
-      width: auto;
-      height: auto;
-    " onclick="event.stopPropagation(); zoomIn();">
-  </div>
+  <img id="lightbox-img" src="" alt="" style="
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.6);
+    cursor: default;
+  " onclick="event.stopPropagation();">
   
   <div class="nav-arrow nav-right" onclick="event.stopPropagation(); nextImage();">►</div>
   
-  <div class="zoom-controls">
-    <button class="zoom-btn" onclick="event.stopPropagation(); zoomOut();">−</button>
-    <button class="zoom-btn" onclick="event.stopPropagation(); resetZoom();">0x</button>
-    <button class="zoom-btn" onclick="event.stopPropagation(); zoomIn();">+</button>
-  </div>
-  
   <div id="image-counter" class="image-counter"></div>
-  <div id="zoom-indicator" class="zoom-indicator">0x</div>
 </div>
 
 </body>
