@@ -23,7 +23,6 @@
       cursor: pointer;
       width:100%;
       border-radius:10px;
-      pointer-events: auto;
       -webkit-user-drag: none;
       user-drag: none;
       -webkit-user-select: none;
@@ -33,70 +32,17 @@
       transform: scale(1.03);
       box-shadow: 0 10px 30px rgba(0,0,0,.35);
     }
-    .section-title { 
-      font-size: 24px; 
-      margin-bottom: 8px; 
-      color: #7aa2ff;
-    }
-    .project-name {
-      font-size: 28px;
-      margin: 0 0 16px 0;
-      font-weight: 600;
-    }
-    hr {
-      border-color: #2a2f3a;
-      margin: 24px 0;
-    }
-    img {
-      -webkit-user-drag: none;
-      user-drag: none;
-      -webkit-user-select: none;
-      user-select: none;
-      pointer-events: auto;
-    }
-    @media (max-width: 1024px) {
-      .grid { grid-template-columns: repeat(3, 1fr); }
-      body { padding: 20px; }
-      .wrap { max-width: 100%; }
-    }
-    @media (max-width: 768px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 480px) {
-      .grid { grid-template-columns: 1fr; }
-    }
-    .nav-arrow {
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 48px;
-      color: white;
-      background: rgba(0,0,0,0.5);
-      padding: 16px 24px;
-      cursor: pointer;
-      z-index: 10000;
-      user-select: none;
-      border-radius: 8px;
-      transition: background 0.2s;
-    }
+    .section-title { font-size: 24px; margin-bottom: 8px; color: #7aa2ff; }
+    .project-name { font-size: 28px; margin: 0 0 16px 0; font-weight: 600; }
+    hr { border-color: #2a2f3a; margin: 24px 0; }
+    @media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } body { padding: 20px; } .wrap { max-width: 100%; } }
+    @media (max-width: 768px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } }
+    .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); font-size: 48px; color: white; background: rgba(0,0,0,0.5); padding: 16px 24px; cursor: pointer; z-index: 10000; user-select: none; border-radius: 8px; transition: background 0.2s; }
     .nav-arrow:hover { background: rgba(0,0,0,0.8); }
     .nav-left { left: 20px; }
     .nav-right { right: 20px; }
-    
-    .image-counter {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-      background: rgba(0,0,0,0.6);
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 14px;
-      z-index: 10000;
-      font-family: monospace;
-      user-select: none;
-    }
+    .image-counter { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: white; background: rgba(0,0,0,0.6); padding: 8px 16px; border-radius: 20px; font-size: 14px; z-index: 10000; font-family: monospace; user-select: none; }
   </style>
 </head>
 <body>
@@ -529,4 +475,12 @@
     height: auto;
     object-fit: contain;
     border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0,0,0
+    box-shadow: 0 20px 60px rgba(0,0,0,.6);
+    cursor: default;
+  " onclick="event.stopPropagation();" oncontextmenu="return false" draggable="false">
+  <div class="nav-arrow nav-right" onclick="event.stopPropagation(); nextImage();">►</div>
+  <div id="image-counter" class="image-counter"></div>
+</div>
+
+</body>
+</html>
