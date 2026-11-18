@@ -1,431 +1,474 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NAVA Studio Portfolio</title>
   <meta name="robots" content="noindex, nofollow">
   <style>
+    :root {
+      --bg: #0f1115;
+      --card: #161a22;
+      --border: #2a2f3a;
+      --text: #e6e6e6;
+      --muted: #8a93a6;
+      --accent: #7aa2ff;
+      --radius: 16px;
+    }
     * { box-sizing: border-box; }
-    body { font-family: Inter, Arial, sans-serif; background:#0f1115; color:#e6e6e6; margin:0; padding:40px; }
-    .wrap { max-width: 1400px; margin: 0 auto; text-align: center; }
-    .login { max-width: 420px; margin: 120px auto; background:#161a22; padding:24px; border-radius:12px; text-align:center; }
-    button, input { padding:10px 12px; border-radius:8px; border:none; font-size: 1rem; }
-    button { cursor:pointer; background:#7aa2ff; color:#0f1115; font-weight:bold; }
-    input { background:#0f1115; color:#e6e6e6; border:1px solid #2a2f3a; margin-right:8px; width:180px; }
-    .card { background:#161a22; padding:24px; border-radius:16px; margin-bottom:28px; text-align: left; }
-    h2, h3 { margin-top: 0; }
-    .grid { 
-      display:grid; 
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, system-ui, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 40px;
+      -webkit-font-smoothing: antialiased;
+    }
+    [hidden] { display: none !important; }
+
+    /* ---------- Login ---------- */
+    .login {
+      max-width: 420px;
+      margin: 120px auto;
+      background: var(--card);
+      padding: 32px 24px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .login h1 { font-size: 24px; margin: 0 0 8px; }
+    .login p { color: var(--muted); margin: 0 0 20px; }
+    .login form { display: flex; gap: 8px; justify-content: center; }
+    .login-error { color: #ff7a7a; font-size: 14px; min-height: 20px; margin-top: 12px; }
+    .shake { animation: shake .35s; }
+    @keyframes shake {
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    button, input { padding: 10px 12px; border-radius: 8px; border: none; font: inherit; }
+    button { cursor: pointer; background: var(--accent); color: var(--bg); font-weight: 700; }
+    button:hover { filter: brightness(1.1); }
+    input {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      width: 200px;
+    }
+    input:focus, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    /* ---------- Layout ---------- */
+    .wrap { max-width: 1400px; margin: 0 auto; }
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      padding: 12px 0 20px;
+      background: linear-gradient(var(--bg) 75%, transparent);
+    }
+    .topnav a {
+      color: var(--text);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      font-size: 14px;
+      transition: border-color .2s, color .2s;
+    }
+    .topnav a:hover { border-color: var(--accent); color: var(--accent); }
+
+    .card {
+      background: var(--card);
+      padding: 24px;
+      border-radius: var(--radius);
+      margin-bottom: 28px;
+      scroll-margin-top: 80px;
+    }
+    .section-title { font-size: 24px; margin: 0 0 16px; color: var(--accent); }
+    .project + .project { border-top: 1px solid var(--border); margin-top: 24px; padding-top: 24px; }
+    .project-name { font-size: 28px; margin: 0 0 16px; font-weight: 600; }
+
+    .grid {
+      display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 18px; 
+      gap: 18px;
     }
-    .grid img {
+    .thumb {
+      display: block;
+      padding: 0;
+      background: var(--bg);
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      cursor: zoom-in;
       transition: transform .2s ease, box-shadow .2s ease;
-      cursor: pointer;
-      width:100%;
-      border-radius:10px;
-      -webkit-user-drag: none;
-      user-drag: none;
-      -webkit-user-select: none;
-      user-select: none;
     }
-    .grid img:hover {
+    .thumb:hover, .thumb:focus-visible {
       transform: scale(1.03);
       box-shadow: 0 10px 30px rgba(0,0,0,.35);
     }
-    .section-title { font-size: 24px; margin-bottom: 8px; color: #7aa2ff; }
-    .project-name { font-size: 28px; margin: 0 0 16px 0; font-weight: 600; }
-    hr { border-color: #2a2f3a; margin: 24px 0; }
-    @media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } body { padding: 20px; } .wrap { max-width: 100%; } }
-    @media (max-width: 768px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } }
-    .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); font-size: 48px; color: white; background: rgba(0,0,0,0.5); padding: 16px 24px; cursor: pointer; z-index: 10000; user-select: none; border-radius: 8px; transition: background 0.2s; }
-    .nav-arrow:hover { background: rgba(0,0,0,0.8); }
-    .nav-left { left: 20px; }
-    .nav-right { right: 20px; }
-    .image-counter { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: white; background: rgba(0,0,0,0.6); padding: 8px 16px; border-radius: 20px; font-size: 14px; z-index: 10000; font-family: monospace; user-select: none; }
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    img {
+      -webkit-user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* ---------- Lightbox ---------- */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.92);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.6);
+      cursor: default;
+    }
+    .lb-btn {
+      position: fixed;
+      background: rgba(0,0,0,.5);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 32px;
+      line-height: 1;
+      padding: 14px 20px;
+      transition: background .2s;
+    }
+    .lb-btn:hover { background: rgba(0,0,0,.85); filter: none; }
+    .lb-prev { left: 20px; top: 50%; transform: translateY(-50%); }
+    .lb-next { right: 20px; top: 50%; transform: translateY(-50%); }
+    .lb-close { top: 20px; right: 20px; font-size: 24px; padding: 10px 16px; }
+    .lb-caption {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      background: rgba(0,0,0,.6);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      white-space: nowrap;
+      user-select: none;
+    }
+    .lb-caption .count { font-family: monospace; opacity: .7; margin-left: 8px; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 1024px) {
+      body { padding: 20px; }
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .project-name { font-size: 22px; }
+      .lb-prev, .lb-next { display: none; } /* на телефоне листаем свайпом */
+    }
+    @media (max-width: 480px) {
+      .grid { grid-template-columns: 1fr; }
+      .login form { flex-direction: column; }
+      input { width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+    }
   </style>
 </head>
 <body>
 
-<div id="login" class="login">
-  <h2>NAVA Studio Portfolio</h2>
+<section id="login" class="login">
+  <h1>NAVA Studio Portfolio</h1>
   <p>Private NDA-safe portfolio</p>
-  <input type="password" id="pw" placeholder="Password" />
-  <button onclick="checkPw()">Enter</button>
-</div>
+  <form id="login-form" autocomplete="off">
+    <input type="password" id="pw" placeholder="Password" aria-label="Password" autofocus>
+    <button type="submit">Enter</button>
+  </form>
+  <div id="login-error" class="login-error" role="alert"></div>
+</section>
 
-<div id="content" class="wrap" style="display:none;">
-  
-  <!-- SKIN -->
-  <div class="card">
-    <div class="section-title">Skin</div>
-    <div class="project-name">Binah</div>
-    <div class="grid">
-      <img src="1.gif" onclick="openLightbox(0)" oncontextmenu="return false" draggable="false">
-      <img src="2.gif" onclick="openLightbox(1)" oncontextmenu="return false" draggable="false">
-      <img src="3.gif" onclick="openLightbox(2)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-    <div class="project-name">Corona</div>
-    <div class="grid">
-      <img src="4.gif" onclick="openLightbox(3)" oncontextmenu="return false" draggable="false">
-      <img src="5.gif" onclick="openLightbox(4)" oncontextmenu="return false" draggable="false">
-      <img src="6.gif" onclick="openLightbox(5)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-    <div class="project-name">Corals</div>
-    <div class="grid">
-      <img src="7.gif" onclick="openLightbox(6)" oncontextmenu="return false" draggable="false">
-      <img src="8.gif" onclick="openLightbox(7)" oncontextmenu="return false" draggable="false">
-      <img src="9.gif" onclick="openLightbox(8)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-    <div class="project-name">Blücher</div>
-    <div class="grid">
-      <img src="10.gif" onclick="openLightbox(9)" oncontextmenu="return false" draggable="false">
-      <img src="11.gif" onclick="openLightbox(10)" oncontextmenu="return false" draggable="false">
-      <img src="12.gif" onclick="openLightbox(11)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-    <div class="project-name">Three Kingdoms</div>
-    <div class="grid">
-      <img src="13.gif" onclick="openLightbox(12)" oncontextmenu="return false" draggable="false">
-      <img src="14.gif" onclick="openLightbox(13)" oncontextmenu="return false" draggable="false">
-      <img src="15.gif" onclick="openLightbox(14)" oncontextmenu="return false" draggable="false">
-      <img src="16.gif" onclick="openLightbox(15)" oncontextmenu="return false" draggable="false">
-    </div>
-  </div>
+<main id="content" class="wrap" hidden>
+  <nav id="topnav" class="topnav" aria-label="Sections"></nav>
+  <div id="gallery"></div>
+</main>
 
-  <!-- SHIPS -->
-  <div class="card">
-    <div class="section-title">Ships</div>
-    
-    <div class="project-name">NATO code Grisha class corvette (project 1124)</div>
-    <div class="grid">
-      <img src="1_1124.jpg" onclick="openLightbox(16)" oncontextmenu="return false" draggable="false">
-      <img src="2_1124.jpg" onclick="openLightbox(17)" oncontextmenu="return false" draggable="false">
-      <img src="3_1124.jpg" onclick="openLightbox(18)" oncontextmenu="return false" draggable="false">
-      <img src="4_1124.jpg" onclick="openLightbox(19)" oncontextmenu="return false" draggable="false">
-      <img src="5_1124.jpg" onclick="openLightbox(20)" oncontextmenu="return false" draggable="false">
-      <img src="6_1124.jpg" onclick="openLightbox(21)" oncontextmenu="return false" draggable="false">
-      <img src="7_1124.jpg" onclick="openLightbox(22)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-
-    <div class="project-name">Surcouf</div>
-    <div class="grid">
-      <img src="17.gif" onclick="openLightbox(23)" oncontextmenu="return false" draggable="false">
-      <img src="18.gif" onclick="openLightbox(24)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-
-    <div class="project-name">August von Parseval</div>
-    <div class="grid">
-      <img src="19.gif" onclick="openLightbox(25)" oncontextmenu="return false" draggable="false">
-      <img src="20.gif" onclick="openLightbox(26)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-
-    <div class="project-name">Duncan</div>
-    <div class="grid">
-      <img src="25.gif" onclick="openLightbox(27)" oncontextmenu="return false" draggable="false">
-      <img src="26.gif" onclick="openLightbox(28)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-
-    <div class="project-name">Utrecht</div>
-    <div class="grid">
-      <img src="27.gif" onclick="openLightbox(29)" oncontextmenu="return false" draggable="false">
-      <img src="28.gif" onclick="openLightbox(30)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-
-    <div class="project-name">Provorny</div>
-    <div class="grid">
-      <img src="29.gif" onclick="openLightbox(31)" oncontextmenu="return false" draggable="false">
-      <img src="30.gif" onclick="openLightbox(32)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-
-    <div class="project-name">Johnston</div>
-    <div class="grid">
-      <img src="31.gif" onclick="openLightbox(33)" oncontextmenu="return false" draggable="false">
-      <img src="32.gif" onclick="openLightbox(34)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-
-    <div class="project-name">Annapolis</div>
-    <div class="grid">
-      <img src="21.gif" onclick="openLightbox(35)" oncontextmenu="return false" draggable="false">
-      <img src="22.gif" onclick="openLightbox(36)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-
-    <div class="project-name">Kijkduin</div>
-    <div class="grid">
-      <img src="23.gif" onclick="openLightbox(37)" oncontextmenu="return false" draggable="false">
-      <img src="24.gif" onclick="openLightbox(38)" oncontextmenu="return false" draggable="false">
-    </div>
-  </div>
-
-  <!-- TANKS -->
-  <div class="card">
-    <div class="section-title">Tanks</div>
-    <div class="project-name">E-50</div>
-    <div class="grid">
-      <img src="E-50_1.jpg" onclick="openLightbox(39)" oncontextmenu="return false" draggable="false">
-      <img src="E-50_2.jpg" onclick="openLightbox(40)" oncontextmenu="return false" draggable="false">
-      <img src="E-50_3.jpg" onclick="openLightbox(41)" oncontextmenu="return false" draggable="false">
-      <img src="E-50_5.jpg" onclick="openLightbox(42)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-    <div class="project-name">Su-152</div>
-    <div class="grid">
-      <img src="Su-152_1.jpg" onclick="openLightbox(43)" oncontextmenu="return false" draggable="false">
-      <img src="Su-152_2.jpg" onclick="openLightbox(44)" oncontextmenu="return false" draggable="false">
-      <img src="Su-152_3.jpg" onclick="openLightbox(45)" oncontextmenu="return false" draggable="false">
-      <img src="Su-152_5.jpg" onclick="openLightbox(46)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-    <div class="project-name">Churchill VII</div>
-    <div class="grid">
-      <img src="Churchill_VII_1.jpg" onclick="openLightbox(47)" oncontextmenu="return false" draggable="false">
-      <img src="Churchill_VII_2.jpg" onclick="openLightbox(48)" oncontextmenu="return false" draggable="false">
-      <img src="Churchill_VII_3.jpg" onclick="openLightbox(49)" oncontextmenu="return false" draggable="false">
-      <img src="Churchill_VII_5.jpg" onclick="openLightbox(50)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-    <div class="project-name">Comet</div>
-    <div class="grid">
-      <img src="Comet_1.jpg" onclick="openLightbox(51)" oncontextmenu="return false" draggable="false">
-      <img src="Comet_2.jpg" onclick="openLightbox(52)" oncontextmenu="return false" draggable="false">
-      <img src="Comet_3.jpg" onclick="openLightbox(53)" oncontextmenu="return false" draggable="false">
-      <img src="Comet_5.jpg" onclick="openLightbox(54)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-    <div class="project-name">Wz-44</div>
-    <div class="grid">
-      <img src="Wz_44_1.jpg" onclick="openLightbox(55)" oncontextmenu="return false" draggable="false">
-      <img src="Wz_44_2.jpg" onclick="openLightbox(56)" oncontextmenu="return false" draggable="false">
-      <img src="Wz_44_3.jpg" onclick="openLightbox(57)" oncontextmenu="return false" draggable="false">
-      <img src="Wz_44_5.jpg" onclick="openLightbox(58)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-    <div class="project-name">Cruiser MK III</div>
-    <div class="grid">
-      <img src="Cruiser_MK3_1.jpg" onclick="openLightbox(59)" oncontextmenu="return false" draggable="false">
-      <img src="Cruiser_MK3_2.jpg" onclick="openLightbox(60)" oncontextmenu="return false" draggable="false">
-      <img src="Cruiser_MK3_3.jpg" onclick="openLightbox(61)" oncontextmenu="return false" draggable="false">
-      <img src="Cruiser_MK3_5.jpg" onclick="openLightbox(62)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-    <div class="project-name">T64B</div>
-    <div class="grid">
-      <img src="T64_1.gif" onclick="openLightbox(63)" oncontextmenu="return false" draggable="false">
-      <img src="T64_2.gif" onclick="openLightbox(64)" oncontextmenu="return false" draggable="false">
-      <img src="T64_3.gif" onclick="openLightbox(65)" oncontextmenu="return false" draggable="false">
-      <img src="T64_4.gif" onclick="openLightbox(66)" oncontextmenu="return false" draggable="false">
-    </div>
-    <hr>
-    <div class="project-name">Type 16 MCV</div>
-    <div class="grid">
-      <img src="40.jpg" onclick="openLightbox(67)" oncontextmenu="return false" draggable="false">
-      <img src="41.jpg" onclick="openLightbox(68)" oncontextmenu="return false" draggable="false">
-      <img src="42.jpg" onclick="openLightbox(69)" oncontextmenu="return false" draggable="false">
-      <img src="43.jpg" onclick="openLightbox(70)" oncontextmenu="return false" draggable="false">
-    </div>
-  </div>
-
-  <!-- FIGHTER -->
-  <div class="card">
-    <div class="section-title">Fighter</div>
-    <div class="project-name">Eurofighter Typhoon</div>
-    <div class="grid">
-      <img src="301.jpg" onclick="openLightbox(71)" oncontextmenu="return false" draggable="false">
-      <img src="302.jpg" onclick="openLightbox(72)" oncontextmenu="return false" draggable="false">
-      <img src="303.jpg" onclick="openLightbox(73)" oncontextmenu="return false" draggable="false">
-      <img src="304.jpg" onclick="openLightbox(74)" oncontextmenu="return false" draggable="false">
-      <img src="305.jpg" onclick="openLightbox(75)" oncontextmenu="return false" draggable="false">
-      <img src="306.jpg" onclick="openLightbox(76)" oncontextmenu="return false" draggable="false">
-      <img src="307.jpg" onclick="openLightbox(77)" oncontextmenu="return false" draggable="false">
-    </div>
-  </div>
-
-  <!-- VEHICLES (removed 108.gif and 109.gif) -->
-  <div class="card">
-    <div class="section-title">Vehicles</div>
-    <div class="project-name">Collection</div>
-    <div class="grid">
-      <img src="100.gif" onclick="openLightbox(78)" oncontextmenu="return false" draggable="false">
-      <img src="101.gif" onclick="openLightbox(79)" oncontextmenu="return false" draggable="false">
-      <img src="102.gif" onclick="openLightbox(80)" oncontextmenu="return false" draggable="false">
-      <img src="103.gif" onclick="openLightbox(81)" oncontextmenu="return false" draggable="false">
-      <img src="104.gif" onclick="openLightbox(82)" oncontextmenu="return false" draggable="false">
-      <img src="105.gif" onclick="openLightbox(83)" oncontextmenu="return false" draggable="false">
-      <img src="106.gif" onclick="openLightbox(84)" oncontextmenu="return false" draggable="false">
-      <img src="107.gif" onclick="openLightbox(85)" oncontextmenu="return false" draggable="false">
-    </div>
-  </div>
-
-  <!-- ENVIRONMENT -->
-  <div class="card">
-    <div class="section-title">Environment</div>
-    <div class="project-name">Collection</div>
-    <div class="grid">
-      <img src="200.gif" onclick="openLightbox(86)" oncontextmenu="return false" draggable="false">
-      <img src="201.gif" onclick="openLightbox(87)" oncontextmenu="return false" draggable="false">
-      <img src="202.gif" onclick="openLightbox(88)" oncontextmenu="return false" draggable="false">
-      <img src="203.gif" onclick="openLightbox(89)" oncontextmenu="return false" draggable="false">
-      <img src="204.gif" onclick="openLightbox(90)" oncontextmenu="return false" draggable="false">
-      <img src="205.gif" onclick="openLightbox(91)" oncontextmenu="return false" draggable="false">
-      <img src="206.gif" onclick="openLightbox(92)" oncontextmenu="return false" draggable="false">
-      <img src="207.gif" onclick="openLightbox(93)" oncontextmenu="return false" draggable="false">
-      <img src="208.gif" onclick="openLightbox(94)" oncontextmenu="return false" draggable="false">
-      <img src="209.gif" onclick="openLightbox(95)" oncontextmenu="return false" draggable="false">
-      <img src="221.gif" onclick="openLightbox(96)" oncontextmenu="return false" draggable="false">
-      <img src="222.gif" onclick="openLightbox(97)" oncontextmenu="return false" draggable="false">
-      <img src="223.gif" onclick="openLightbox(98)" oncontextmenu="return false" draggable="false">
-      <img src="224.gif" onclick="openLightbox(99)" oncontextmenu="return false" draggable="false">
-      <img src="225.gif" onclick="openLightbox(100)" oncontextmenu="return false" draggable="false">
-      <img src="226.gif" onclick="openLightbox(101)" oncontextmenu="return false" draggable="false">
-      <img src="227.gif" onclick="openLightbox(102)" oncontextmenu="return false" draggable="false">
-      <img src="228.gif" onclick="openLightbox(103)" oncontextmenu="return false" draggable="false">
-      <img src="229.gif" onclick="openLightbox(104)" oncontextmenu="return false" draggable="false">
-      <img src="230.gif" onclick="openLightbox(105)" oncontextmenu="return false" draggable="false">
-      <img src="231.gif" onclick="openLightbox(106)" oncontextmenu="return false" draggable="false">
-      <img src="232.gif" onclick="openLightbox(107)" oncontextmenu="return false" draggable="false">
-    </div>
-  </div>
+<div id="lightbox" class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Image viewer">
+  <button class="lb-btn lb-close" data-action="close" aria-label="Close">✕</button>
+  <button class="lb-btn lb-prev" data-action="prev" aria-label="Previous">◀</button>
+  <img id="lb-img" src="" alt="" draggable="false">
+  <button class="lb-btn lb-next" data-action="next" aria-label="Next">▶</button>
+  <div class="lb-caption"><span id="lb-title"></span><span id="lb-count" class="count"></span></div>
 </div>
 
 <script>
-  const correctPw = "NAVA2026";
+/* =========================================================
+   ДАННЫЕ ПОРТФОЛИО
+   Чтобы добавить/убрать работу — правьте только этот список.
+   Сетка, навигация и порядок в просмотрщике строятся сами.
+   ========================================================= */
+const range = (from, to, ext) =>
+  Array.from({ length: to - from + 1 }, (_, i) => `${from + i}.${ext}`);
+const shots = (prefix, nums, ext = "jpg") => nums.map(n => `${prefix}${n}.${ext}`);
 
-  // All images except Props (removed) and 108.gif, 109.gif (removed)
-  const allImages = [
-    "1.gif","2.gif","3.gif","4.gif","5.gif","6.gif","7.gif","8.gif","9.gif",
-    "10.gif","11.gif","12.gif","13.gif","14.gif","15.gif","16.gif",
-    "1_1124.jpg","2_1124.jpg","3_1124.jpg","4_1124.jpg","5_1124.jpg","6_1124.jpg","7_1124.jpg",
-    "17.gif","18.gif","19.gif","20.gif","25.gif","26.gif","27.gif","28.gif",
-    "29.gif","30.gif","31.gif","32.gif","21.gif","22.gif","23.gif","24.gif",
-    "E-50_1.jpg","E-50_2.jpg","E-50_3.jpg","E-50_5.jpg",
-    "Su-152_1.jpg","Su-152_2.jpg","Su-152_3.jpg","Su-152_5.jpg",
-    "Churchill_VII_1.jpg","Churchill_VII_2.jpg","Churchill_VII_3.jpg","Churchill_VII_5.jpg",
-    "Comet_1.jpg","Comet_2.jpg","Comet_3.jpg","Comet_5.jpg",
-    "Wz_44_1.jpg","Wz_44_2.jpg","Wz_44_3.jpg","Wz_44_5.jpg",
-    "Cruiser_MK3_1.jpg","Cruiser_MK3_2.jpg","Cruiser_MK3_3.jpg","Cruiser_MK3_5.jpg",
-    "T64_1.gif","T64_2.gif","T64_3.gif","T64_4.gif","40.jpg","41.jpg","42.jpg","43.jpg",
-    "301.jpg","302.jpg","303.jpg","304.jpg","305.jpg","306.jpg","307.jpg",
-    "100.gif","101.gif","102.gif","103.gif","104.gif","105.gif","106.gif","107.gif",
-    "200.gif","201.gif","202.gif","203.gif","204.gif","205.gif","206.gif","207.gif","208.gif","209.gif",
-    "221.gif","222.gif","223.gif","224.gif","225.gif","226.gif","227.gif","228.gif",
-    "229.gif","230.gif","231.gif","232.gif"
-  ];
+const PORTFOLIO = [
+  {
+    section: "Skin",
+    projects: [
+      { name: "Binah",          images: range(1, 3, "gif") },
+      { name: "Corona",         images: range(4, 6, "gif") },
+      { name: "Corals",         images: range(7, 9, "gif") },
+      { name: "Blücher",        images: range(10, 12, "gif") },
+      { name: "Three Kingdoms", images: range(13, 16, "gif") },
+    ],
+  },
+  {
+    section: "Ships",
+    projects: [
+      { name: "NATO code Grisha class corvette (project 1124)",
+        images: [1,2,3,4,5,6,7].map(n => `${n}_1124.jpg`) },
+      { name: "Surcouf",             images: ["17.gif", "18.gif"] },
+      { name: "August von Parseval", images: ["19.gif", "20.gif"] },
+      { name: "Duncan",              images: ["25.gif", "26.gif"] },
+      { name: "Utrecht",             images: ["27.gif", "28.gif"] },
+      { name: "Provorny",            images: ["29.gif", "30.gif"] },
+      { name: "Johnston",            images: ["31.gif", "32.gif"] },
+      { name: "Annapolis",           images: ["21.gif", "22.gif"] },
+      { name: "Kijkduin",            images: ["23.gif", "24.gif"] },
+    ],
+  },
+  {
+    section: "Tanks",
+    projects: [
+      { name: "E-50",          images: shots("E-50_",         [1,2,3,5]) },
+      { name: "Su-152",        images: shots("Su-152_",       [1,2,3,5]) },
+      { name: "Churchill VII", images: shots("Churchill_VII_",[1,2,3,5]) },
+      { name: "Comet",         images: shots("Comet_",        [1,2,3,5]) },
+      { name: "Wz-44",         images: shots("Wz_44_",        [1,2,3,5]) },
+      { name: "Cruiser MK III",images: shots("Cruiser_MK3_",  [1,2,3,5]) },
+      { name: "T64B",          images: shots("T64_",          [1,2,3,4], "gif") },
+      { name: "Type 16 MCV",   images: range(40, 43, "jpg") },
+    ],
+  },
+  {
+    section: "Fighter",
+    projects: [
+      { name: "Eurofighter Typhoon", images: range(301, 307, "jpg") },
+    ],
+  },
+  {
+    section: "Vehicles",
+    projects: [
+      { name: "Collection", images: range(100, 107, "gif") },
+    ],
+  },
+  {
+    section: "Environment",
+    projects: [
+      { name: "Collection", images: range(200, 209, "gif") },
+    ],
+  },
+];
 
-  let currentIndex = 0;
+/* =========================================================
+   ВХОД
+   ========================================================= */
+const PASSWORD = "NAVA2026";
+const AUTH_KEY = "nava_auth";
 
-  function openLightbox(index) {
-    currentIndex = index;
-    document.getElementById("lightbox-img").src = allImages[currentIndex];
-    document.getElementById("lightbox").style.display = "flex";
-    updateCounter();
+const $ = id => document.getElementById(id);
+
+function unlock() {
+  $("login").hidden = true;
+  $("content").hidden = false;
+  buildGallery();
+}
+
+$("login-form").addEventListener("submit", e => {
+  e.preventDefault();
+  const box = $("login");
+  if ($("pw").value === PASSWORD) {
+    try { sessionStorage.setItem(AUTH_KEY, "1"); } catch (_) {}
+    unlock();
+  } else {
+    $("login-error").textContent = "Incorrect password";
+    box.classList.remove("shake");
+    void box.offsetWidth; // перезапуск анимации
+    box.classList.add("shake");
+    $("pw").select();
   }
+});
 
-  function closeLightbox() {
-    document.getElementById("lightbox").style.display = "none";
-  }
+try { if (sessionStorage.getItem(AUTH_KEY) === "1") unlock(); } catch (_) {}
 
-  function nextImage() {
-    currentIndex = (currentIndex + 1) % allImages.length;
-    document.getElementById("lightbox-img").src = allImages[currentIndex];
-    updateCounter();
-  }
+/* =========================================================
+   ГАЛЕРЕЯ
+   ========================================================= */
+const flat = []; // [{ src, title }] — общий порядок для просмотрщика
+let built = false;
 
-  function prevImage() {
-    currentIndex = (currentIndex - 1 + allImages.length) % allImages.length;
-    document.getElementById("lightbox-img").src = allImages[currentIndex];
-    updateCounter();
-  }
+function slug(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "-"); }
 
-  function updateCounter() {
-    const counter = document.getElementById("image-counter");
-    if (counter) {
-      counter.textContent = `${currentIndex + 1} / ${allImages.length}`;
-    }
-  }
+function buildGallery() {
+  if (built) return;
+  built = true;
 
-  function checkPw() {
-    const input = document.getElementById("pw").value;
-    if (input === correctPw) {
-      document.getElementById("login").style.display = "none";
-      document.getElementById("content").style.display = "block";
-    } else {
-      alert("Incorrect password");
-    }
-  }
+  const nav = $("topnav");
+  const gallery = $("gallery");
+  const navFrag = document.createDocumentFragment();
+  const galFrag = document.createDocumentFragment();
 
-  document.addEventListener("contextmenu", function(e) {
-    if (e.target.tagName === "IMG") {
-      e.preventDefault();
-      return false;
-    }
+  PORTFOLIO.forEach(({ section, projects }) => {
+    const id = slug(section);
+
+    const link = document.createElement("a");
+    link.href = `#${id}`;
+    link.textContent = section;
+    navFrag.appendChild(link);
+
+    const card = document.createElement("section");
+    card.className = "card";
+    card.id = id;
+    card.innerHTML = `<h2 class="section-title">${section}</h2>`;
+
+    projects.forEach(({ name, images }) => {
+      const project = document.createElement("div");
+      project.className = "project";
+      project.innerHTML = `<h3 class="project-name">${name}</h3>`;
+
+      const grid = document.createElement("div");
+      grid.className = "grid";
+
+      images.forEach((src, i) => {
+        const index = flat.length;
+        const title = projects.length > 1 || name !== "Collection" ? name : section;
+        flat.push({ src, title });
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "thumb";
+        btn.dataset.index = index;
+        btn.setAttribute("aria-label", `${title} — image ${i + 1}`);
+
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = `${title} ${i + 1}`;
+        img.loading = "lazy";
+        img.decoding = "async";
+        img.draggable = false;
+
+        btn.appendChild(img);
+        grid.appendChild(btn);
+      });
+
+      project.appendChild(grid);
+      card.appendChild(project);
+    });
+
+    galFrag.appendChild(card);
   });
 
-  document.addEventListener("keydown", function(e) {
-    if ((e.ctrlKey || e.metaKey) && e.key === "s") {
-      e.preventDefault();
-      return false;
-    }
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === "I") {
-      e.preventDefault();
-      return false;
-    }
-    if (e.key === "F12") {
-      e.preventDefault();
-      return false;
-    }
-    const lb = document.getElementById("lightbox");
-    if (lb.style.display === "flex") {
-      if (e.key === "ArrowLeft") {
-        prevImage();
-        e.preventDefault();
-      } else if (e.key === "ArrowRight") {
-        nextImage();
-        e.preventDefault();
-      } else if (e.key === "Escape") {
-        closeLightbox();
-        e.preventDefault();
-      }
-    }
+  nav.appendChild(navFrag);
+  gallery.appendChild(galFrag);
+
+  // Один обработчик на всю галерею вместо сотни onclick
+  gallery.addEventListener("click", e => {
+    const t = e.target.closest(".thumb");
+    if (t) openLightbox(+t.dataset.index);
   });
+}
+
+/* =========================================================
+   ПРОСМОТРЩИК
+   ========================================================= */
+const lb = $("lightbox");
+const lbImg = $("lb-img");
+let current = 0;
+let lastFocus = null;
+
+function show(i) {
+  current = (i + flat.length) % flat.length;
+  const { src, title } = flat[current];
+  lbImg.src = src;
+  lbImg.alt = title;
+  $("lb-title").textContent = title;
+  $("lb-count").textContent = `${current + 1} / ${flat.length}`;
+  // предзагрузка соседних кадров
+  [current - 1, current + 1].forEach(n => {
+    new Image().src = flat[(n + flat.length) % flat.length].src;
+  });
+}
+
+function openLightbox(i) {
+  lastFocus = document.activeElement;
+  show(i);
+  lb.hidden = false;
+  document.body.style.overflow = "hidden";
+  lb.querySelector(".lb-close").focus();
+}
+
+function closeLightbox() {
+  lb.hidden = true;
+  lbImg.src = "";
+  document.body.style.overflow = "";
+  if (lastFocus) lastFocus.focus();
+}
+
+lb.addEventListener("click", e => {
+  const action = e.target.closest("[data-action]")?.dataset.action;
+  if (action === "prev") return show(current - 1);
+  if (action === "next") return show(current + 1);
+  if (action === "close" || e.target === lb) closeLightbox();
+});
+
+// Свайпы на телефоне
+let touchX = null;
+lb.addEventListener("touchstart", e => { touchX = e.touches[0].clientX; }, { passive: true });
+lb.addEventListener("touchend", e => {
+  if (touchX === null) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1));
+  touchX = null;
+});
+
+/* =========================================================
+   КЛАВИАТУРА И ЗАЩИТА ОТ ПРОСТОГО СОХРАНЕНИЯ
+   ========================================================= */
+document.addEventListener("keydown", e => {
+  const mod = e.ctrlKey || e.metaKey;
+  if ((mod && e.key.toLowerCase() === "s") ||
+      (mod && e.shiftKey && e.key.toLowerCase() === "i") ||
+      e.key === "F12") {
+    e.preventDefault();
+    return;
+  }
+  if (lb.hidden) return;
+  if (e.key === "ArrowLeft")  { e.preventDefault(); show(current - 1); }
+  if (e.key === "ArrowRight") { e.preventDefault(); show(current + 1); }
+  if (e.key === "Escape")     { e.preventDefault(); closeLightbox(); }
+});
+
+document.addEventListener("contextmenu", e => {
+  if (e.target.tagName === "IMG") e.preventDefault();
+});
+document.addEventListener("dragstart", e => {
+  if (e.target.tagName === "IMG") e.preventDefault();
+});
 </script>
-
-<div id="lightbox" onclick="closeLightbox()" style="
-  display:none;
-  position:fixed;
-  inset:0;
-  background: rgba(0,0,0,0.9);
-  z-index: 9999;
-  align-items: center;
-  justify-content: center;
-  cursor: zoom-out;
-">
-  <div class="nav-arrow nav-left" onclick="event.stopPropagation(); prevImage();">◀</div>
-  <img id="lightbox-img" src="" alt="" style="
-    max-width: 90vw;
-    max-height: 90vh;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0,0,0,.6);
-    cursor: default;
-  " onclick="event.stopPropagation();" oncontextmenu="return false" draggable="false">
-  <div class="nav-arrow nav-right" onclick="event.stopPropagation(); nextImage();">►</div>
-  <div id="image-counter" class="image-counter"></div>
-</div>
-
 </body>
 </html>
