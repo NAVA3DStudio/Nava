@@ -471,6 +471,7 @@ const PORTFOLIO = [
     section: "Props & Weapons",
     note: "Game-ready props and weapon systems",
     projects: [
+      { name: "Mk14 EBR",         images: shots("Mk14_EBR_", [1,2,3,4,5,6,7]) },
       { name: "Twin Bofors 40mm", images: shots("Twin_Bofors_", [1,2]) },
       { name: "MBS-9M Hydra", type: "Three-barreled heavy machine gun", images: shots("MBS-9M_Hydra_", [1,2,3,4]) },
       { name: "Pandora Dagger",   images: shots("Pandora_Dagger_", [1,2,3]) },
@@ -610,7 +611,11 @@ function buildGallery() {
         btn.dataset.index = index;
         btn.setAttribute("aria-label", `Open ${title}, image ${i + 1}`);
         const large = i === 0 && grid.classList.contains("feature");
-        btn.appendChild(makeImg(src, `${title} ${i + 1}`, large));
+        const img = makeImg(src, `${title} ${i + 1}`, large);
+        if (large) img.addEventListener("load", () => {
+          if (img.naturalWidth && innerWidth > 640) btn.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
+        });
+        btn.appendChild(img);
         grid.appendChild(btn);
       });
 
