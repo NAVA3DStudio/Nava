@@ -472,6 +472,7 @@ const PORTFOLIO = [
     note: "Game-ready props and weapon systems",
     projects: [
       { name: "Twin Bofors 40mm", images: shots("Twin_Bofors_", [1,2]) },
+      { name: "MBS-9M Hydra", type: "Three-barreled heavy machine gun", images: shots("MBS-9M_Hydra_", [1,2,3,4]) },
     ],
   },
   {
@@ -583,12 +584,12 @@ function buildGallery() {
         <p class="chapter-meta">${note}. ${count}</p>
       </div>`;
 
-    projects.forEach(({ name, images }) => {
+    projects.forEach(({ name, type, images }) => {
       const project = document.createElement("div");
       project.className = "project";
       const title = name === "Collection" ? section : name;
       if (name !== "Collection") {
-        project.innerHTML = `<h3 class="project-name">${name}</h3>`;
+        project.innerHTML = `<h3 class="project-name">${name}${type ? ` <small>${type}</small>` : ""}</h3>`;
       }
 
       const grid = document.createElement("div");
