@@ -531,7 +531,6 @@ $("gate-form").addEventListener("submit", e => {
   }
 });
 
-try { if (sessionStorage.getItem(AUTH_KEY) === "1") unlock(); } catch (_) {}
 
 /* =========================================================
    ГАЛЕРЕЯ
@@ -679,6 +678,7 @@ function closeLightbox() {
 }
 
 lbImg.addEventListener("error", () => {
+  if (lb.hidden || !flat[current]) return;
   const src = flat[current].src;
   if (!lbImg.src.endsWith(src)) lbImg.src = src;
 });
@@ -710,6 +710,9 @@ document.addEventListener("keydown", e => {
 });
 document.addEventListener("contextmenu", e => { if (e.target.tagName === "IMG") e.preventDefault(); });
 document.addEventListener("dragstart", e => { if (e.target.tagName === "IMG") e.preventDefault(); });
+
+// Повторный вход в той же вкладке — без пароля (в конце, когда всё уже объявлено)
+try { if (sessionStorage.getItem(AUTH_KEY) === "1") unlock(); } catch (_) {}
 </script>
 </body>
 </html>
