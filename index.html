@@ -198,7 +198,7 @@
     .grid.c2 { grid-template-columns: repeat(2, 1fr); }
     .grid.c3 { grid-template-columns: repeat(3, 1fr); }
     .grid.feature { grid-template-columns: repeat(3, 1fr); }
-    .grid.feature .thumb:first-child { grid-column: 1 / -1; aspect-ratio: 2 / 1; }
+    .grid.feature .thumb:first-child { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
 
     .thumb {
       position: relative;
@@ -519,19 +519,18 @@ let built = false;
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
 
-function makeImg(src, alt) {
+function makeImg(src, alt, large) {
   const img = document.createElement("img");
   img.alt = alt;
   img.loading = "lazy";
   img.decoding = "async";
   img.draggable = false;
   img.addEventListener("load", () => img.classList.add("ready"));
-  img.addEventListener("error", () => {
-    if (img.dataset.fallback) return;
-    img.dataset.fallback = "1";
-    img.src = src;
-  });
-  img.src = thumbOf(src);
+  // Большой кадр: превью 2560px, обычные плитки: 1280px; если файла нет — оригинал
+  const chain = large ? [`thumbs/lg/${src}.jpg`, thumbOf(src), src] : [thumbOf(src), src];
+  let step = 0;
+  img.addEventListener("error", () => { if (++step < chain.length) img.src = chain[step]; });
+  img.src = chain[0];
   return img;
 }
 
@@ -589,7 +588,8 @@ function buildGallery() {
         btn.className = "thumb";
         btn.dataset.index = index;
         btn.setAttribute("aria-label", `Open ${title}, image ${i + 1}`);
-        btn.appendChild(makeImg(src, `${title} ${i + 1}`));
+        const large = i === 0 && grid.classList.contains("feature");
+        btn.appendChild(makeImg(src, `${title} ${i + 1}`, large));
         grid.appendChild(btn);
       });
 
