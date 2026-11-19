@@ -278,11 +278,12 @@
       grid-template-rows: 1fr auto;
       cursor: zoom-out;
     }
-    .lb-stage { display: grid; place-items: center; padding: 24px 80px 0; min-height: 0; }
+    .lb-stage { position: relative; padding: 12px 76px 0; min-height: 0; }
     .lb-stage img {
-      max-width: 100%;
-      max-height: calc(100vh - 110px);
-      object-fit: contain;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;      /* растягиваем на всё доступное место, без обрезки */
       cursor: default;
     }
     .lb-info {
@@ -324,7 +325,7 @@
       body { font-size: 16px; }
       .bar { gap: 18px; }
       .grid, .grid.c2, .grid.c3, .grid.feature, .grid.feature.f4 { grid-template-columns: 1fr; }
-      .lb-stage { padding: 16px 12px 0; }
+      .lb-stage { padding: 8px 0 0; }
       .lb-prev, .lb-next { display: none; }
       .hero { background-position: 75% center; }
     }
@@ -683,12 +684,21 @@ lbImg.addEventListener("error", () => {
   if (!lbImg.src.endsWith(src)) lbImg.src = src;
 });
 
+// Клик по пустым полям вокруг картинки (внутри растянутого <img>) закрывает просмотр
+function outsidePicture(e) {
+  const r = lbImg.getBoundingClientRect();
+  const k = Math.min(r.width / lbImg.naturalWidth, r.height / lbImg.naturalHeight) || 1;
+  const w = lbImg.naturalWidth * k, h = lbImg.naturalHeight * k;
+  const x = e.clientX - r.left - (r.width - w) / 2, y = e.clientY - r.top - (r.height - h) / 2;
+  return x < 0 || y < 0 || x > w || y > h;
+}
+
 lb.addEventListener("click", e => {
   const action = e.target.closest("[data-action]")?.dataset.action;
-  if (e.target === lbImg) return;
+  if (e.target === lbImg && !outsidePicture(e)) return;
   if (action === "prev") return show(current - 1);
   if (action === "next") return show(current + 1);
-  if (action === "close") closeLightbox();
+  if (action === "close" || e.target === lbImg) closeLightbox();
 });
 
 let touchX = null;
