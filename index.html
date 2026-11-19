@@ -3,188 +3,329 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NAVA Studio Portfolio</title>
+  <title>NAVA Studio — Portfolio</title>
   <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0f1115;
-      --card: #161a22;
-      --border: #2a2f3a;
-      --text: #e6e6e6;
-      --muted: #8a93a6;
-      --accent: #7aa2ff;
-      --radius: 16px;
+      --night: #070b10;
+      --hull: #0e161f;
+      --rivet: #1d2a36;
+      --paper: #eaf0f4;
+      --haze: #8a9aaa;
+      --sky: #8ec5eb;
+      --pad: clamp(20px, 5vw, 84px);
+      --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: Inter, system-ui, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
       margin: 0;
-      padding: 40px;
+      background: var(--night);
+      color: var(--paper);
+      font-family: var(--display);
+      font-size: 17px;
+      line-height: 1.55;
       -webkit-font-smoothing: antialiased;
     }
     [hidden] { display: none !important; }
+    a { color: inherit; }
+    img { -webkit-user-drag: none; user-select: none; -webkit-user-select: none; }
+    :focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; }
+
+    .wordmark {
+      font-stretch: 125%;
+      font-weight: 600;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      line-height: .9;
+      margin: 0;
+    }
+    .wordmark span { display: block; }
+    .wordmark span + span { color: var(--sky); }
 
     /* ---------- Login ---------- */
-    .login {
-      max-width: 420px;
-      margin: 120px auto;
-      background: var(--card);
-      padding: 32px 24px;
-      border-radius: 12px;
-      text-align: center;
+    .gate {
+      min-height: 100vh;
+      display: grid;
+      align-items: end;
+      padding: var(--pad);
+      background:
+        linear-gradient(90deg, var(--night) 30%, rgba(7,11,16,.55) 70%, rgba(7,11,16,.2)),
+        var(--hero) center right / cover no-repeat,
+        var(--night);
     }
-    .login h1 { font-size: 24px; margin: 0 0 8px; }
-    .login p { color: var(--muted); margin: 0 0 20px; }
-    .login form { display: flex; gap: 8px; justify-content: center; }
-    .login-error { color: #ff7a7a; font-size: 14px; min-height: 20px; margin-top: 12px; }
+    .gate-inner { max-width: 520px; }
+    .gate .wordmark { font-size: clamp(56px, 9vw, 120px); }
+    .gate p { color: var(--haze); margin: 28px 0 20px; max-width: 34ch; }
+    .gate form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .gate input, .gate button {
+      font: inherit;
+      font-size: 16px;
+      padding: 14px 18px;
+      border-radius: 4px;
+    }
+    .gate input {
+      flex: 1 1 220px;
+      background: rgba(14,22,31,.85);
+      color: var(--paper);
+      border: 1px solid var(--rivet);
+    }
+    .gate input:focus { border-color: var(--sky); outline: none; }
+    .gate button {
+      border: 0;
+      background: var(--sky);
+      color: var(--night);
+      font-weight: 650;
+      cursor: pointer;
+    }
+    .gate button:hover { background: #a9d4f1; }
+    .gate-error { color: #ff9b8f; min-height: 1.55em; margin-top: 12px; font-size: 15px; }
     .shake { animation: shake .35s; }
-    @keyframes shake {
-      20%, 60% { transform: translateX(-6px); }
-      40%, 80% { transform: translateX(6px); }
-    }
-    button, input { padding: 10px 12px; border-radius: 8px; border: none; font: inherit; }
-    button { cursor: pointer; background: var(--accent); color: var(--bg); font-weight: 700; }
-    button:hover { filter: brightness(1.1); }
-    input {
-      background: var(--bg);
-      color: var(--text);
-      border: 1px solid var(--border);
-      width: 200px;
-    }
-    input:focus, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    @keyframes shake { 20%,60% { transform: translateX(-6px); } 40%,80% { transform: translateX(6px); } }
 
-    /* ---------- Layout ---------- */
-    .wrap { max-width: 1400px; margin: 0 auto; }
-    .topnav {
+    /* ---------- Top bar ---------- */
+    .bar {
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      padding: 16px var(--pad);
+      background: rgba(7,11,16,.86);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rivet);
+    }
+    .bar-brand {
+      font-stretch: 125%;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: .04em;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .bar nav {
+      display: flex;
+      gap: 26px;
+      margin-left: auto;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .bar nav::-webkit-scrollbar { display: none; }
+    .bar nav a {
+      color: var(--haze);
+      text-decoration: none;
+      font-size: 15px;
+      white-space: nowrap;
+      padding: 4px 0;
+      border-bottom: 1px solid transparent;
+    }
+    .bar nav a:hover { color: var(--paper); }
+    .bar nav a.active { color: var(--paper); border-bottom-color: var(--sky); }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      min-height: min(88vh, 900px);
+      display: grid;
+      align-content: end;
+      padding: var(--pad);
+      background:
+        linear-gradient(90deg, var(--night) 18%, rgba(7,11,16,.35) 55%, rgba(7,11,16,0) 80%),
+        linear-gradient(0deg, var(--night) 0%, rgba(7,11,16,0) 35%),
+        var(--hero) 70% center / cover no-repeat;
+    }
+    .hero .wordmark { font-size: clamp(72px, 14vw, 220px); }
+    .hero-lede {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-      padding: 12px 0 20px;
-      background: linear-gradient(var(--bg) 75%, transparent);
+      gap: 12px 48px;
+      align-items: baseline;
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--rivet);
+      max-width: 960px;
     }
-    .topnav a {
-      color: var(--text);
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 999px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      font-size: 14px;
-      transition: border-color .2s, color .2s;
-    }
-    .topnav a:hover { border-color: var(--accent); color: var(--accent); }
+    .hero-lede p { margin: 0; max-width: 46ch; color: var(--haze); }
+    .hero-lede strong { color: var(--paper); font-weight: 500; }
+    .hero-lede a { color: var(--sky); text-decoration: none; white-space: nowrap; }
+    .hero-lede a:hover { text-decoration: underline; }
 
-    .card {
-      background: var(--card);
-      padding: 24px;
-      border-radius: var(--radius);
-      margin-bottom: 28px;
-      scroll-margin-top: 80px;
+    /* ---------- Sections ---------- */
+    .chapter {
+      padding: clamp(64px, 9vw, 140px) var(--pad) 0;
+      scroll-margin-top: 60px;
     }
-    .section-title { font-size: 24px; margin: 0 0 16px; color: var(--accent); }
-    .project + .project { border-top: 1px solid var(--border); margin-top: 24px; padding-top: 24px; }
-    .project-name { font-size: 28px; margin: 0 0 16px; font-weight: 600; }
+    .chapter-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px 24px;
+      padding-bottom: 20px;
+      margin-bottom: 36px;
+      border-bottom: 1px solid var(--rivet);
+    }
+    .chapter-title {
+      margin: 0;
+      font-stretch: 125%;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: clamp(40px, 7vw, 104px);
+      line-height: .92;
+      letter-spacing: .01em;
+    }
+    .chapter-meta { color: var(--haze); font-size: 15px; margin: 0; }
+
+    .project { margin-bottom: clamp(48px, 6vw, 88px); }
+    .project-name {
+      margin: 0 0 16px;
+      font-size: clamp(20px, 2vw, 26px);
+      font-weight: 500;
+      font-stretch: 100%;
+    }
+    .project-name small { color: var(--haze); font-size: 15px; font-weight: 400; margin-left: 10px; }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
+      gap: 12px;
     }
+    .grid.c2 { grid-template-columns: repeat(2, 1fr); }
+    .grid.c3 { grid-template-columns: repeat(3, 1fr); }
+    .grid.feature { grid-template-columns: repeat(3, 1fr); }
+    .grid.feature .thumb:first-child { grid-column: 1 / -1; aspect-ratio: 2 / 1; }
+
     .thumb {
+      position: relative;
       display: block;
+      width: 100%;
       padding: 0;
-      background: var(--bg);
-      border-radius: 10px;
+      border: 0;
+      border-radius: 3px;
       overflow: hidden;
-      aspect-ratio: 16 / 10;
+      aspect-ratio: 16 / 9;
+      background: var(--hull);
       cursor: zoom-in;
-      transition: transform .2s ease, box-shadow .2s ease;
-    }
-    .thumb:hover, .thumb:focus-visible {
-      transform: scale(1.03);
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
     }
     .thumb img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+      opacity: 0;
+      transition: opacity .4s ease, transform .5s ease;
     }
-    img {
-      -webkit-user-drag: none;
-      user-select: none;
-      -webkit-user-select: none;
+    .thumb img.ready { opacity: 1; }
+    .thumb:hover img.ready { transform: scale(1.025); }
+    .thumb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px rgba(234,240,244,.06);
+      pointer-events: none;
+    }
+
+    /* ---------- Contact ---------- */
+    .contact {
+      margin-top: clamp(64px, 9vw, 140px);
+      padding: clamp(56px, 7vw, 110px) var(--pad);
+      background: var(--hull);
+      border-top: 1px solid var(--rivet);
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 40px;
+      align-items: end;
+    }
+    .contact h2 {
+      margin: 0;
+      font-stretch: 125%;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: clamp(36px, 5vw, 72px);
+      line-height: .95;
+    }
+    .contact p { color: var(--haze); margin: 18px 0 0; max-width: 40ch; }
+    .contact dl { margin: 0; display: grid; gap: 18px; }
+    .contact dt { color: var(--haze); font-size: 14px; }
+    .contact dd { margin: 2px 0 0; font-size: clamp(18px, 1.8vw, 22px); }
+    .contact dd a { text-decoration: none; }
+    .contact dd a:hover { color: var(--sky); }
+    .contact .mail { color: var(--sky); }
+    footer {
+      padding: 22px var(--pad);
+      color: var(--haze);
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-top: 1px solid var(--rivet);
     }
 
     /* ---------- Lightbox ---------- */
     .lightbox {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,.92);
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      z-index: 999;
+      background: rgba(4,7,10,.96);
+      display: grid;
+      grid-template-rows: 1fr auto;
       cursor: zoom-out;
     }
-    .lightbox img {
-      max-width: 90vw;
-      max-height: 85vh;
+    .lb-stage { display: grid; place-items: center; padding: 24px 80px 0; min-height: 0; }
+    .lb-stage img {
+      max-width: 100%;
+      max-height: calc(100vh - 110px);
       object-fit: contain;
-      border-radius: 12px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.6);
       cursor: default;
     }
+    .lb-info {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px var(--pad);
+      color: var(--haze);
+      font-size: 15px;
+      cursor: default;
+    }
+    .lb-info strong { color: var(--paper); font-weight: 500; }
     .lb-btn {
       position: fixed;
-      background: rgba(0,0,0,.5);
-      color: #fff;
-      border-radius: 8px;
-      font-size: 32px;
-      line-height: 1;
-      padding: 14px 20px;
-      transition: background .2s;
+      background: rgba(14,22,31,.8);
+      color: var(--paper);
+      border: 1px solid var(--rivet);
+      border-radius: 50%;
+      width: 52px;
+      height: 52px;
+      font: inherit;
+      font-size: 20px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
     }
-    .lb-btn:hover { background: rgba(0,0,0,.85); filter: none; }
-    .lb-prev { left: 20px; top: 50%; transform: translateY(-50%); }
-    .lb-next { right: 20px; top: 50%; transform: translateY(-50%); }
-    .lb-close { top: 20px; right: 20px; font-size: 24px; padding: 10px 16px; }
-    .lb-caption {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #fff;
-      background: rgba(0,0,0,.6);
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 14px;
-      white-space: nowrap;
-      user-select: none;
-    }
-    .lb-caption .count { font-family: monospace; opacity: .7; margin-left: 8px; }
+    .lb-btn:hover { border-color: var(--sky); color: var(--sky); }
+    .lb-prev { left: 16px; top: 50%; transform: translateY(-50%); }
+    .lb-next { right: 16px; top: 50%; transform: translateY(-50%); }
+    .lb-close { top: 16px; right: 16px; }
 
     /* ---------- Responsive ---------- */
     @media (max-width: 1024px) {
-      body { padding: 20px; }
-      .grid { grid-template-columns: repeat(3, 1fr); }
+      .grid, .grid.c3, .grid.feature { grid-template-columns: repeat(2, 1fr); }
+      .grid.feature .thumb:first-child { aspect-ratio: 16 / 9; }
+      .contact { grid-template-columns: 1fr; }
     }
-    @media (max-width: 768px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
-      .project-name { font-size: 22px; }
-      .lb-prev, .lb-next { display: none; } /* на телефоне листаем свайпом */
-    }
-    @media (max-width: 480px) {
-      .grid { grid-template-columns: 1fr; }
-      .login form { flex-direction: column; }
-      input { width: 100%; }
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      .bar { gap: 18px; }
+      .grid, .grid.c2, .grid.c3, .grid.feature { grid-template-columns: 1fr; }
+      .lb-stage { padding: 16px 12px 0; }
+      .lb-prev, .lb-next { display: none; }
+      .hero { background-position: 75% center; }
     }
     @media (prefers-reduced-motion: reduce) {
       * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
@@ -193,27 +334,62 @@
 </head>
 <body>
 
-<section id="login" class="login">
-  <h1>NAVA Studio Portfolio</h1>
-  <p>Private portfolio</p>
-  <form id="login-form" autocomplete="off">
-    <input type="password" id="pw" placeholder="Password" aria-label="Password" autofocus>
-    <button type="submit">Enter</button>
-  </form>
-  <div id="login-error" class="login-error" role="alert"></div>
+<section id="gate" class="gate">
+  <div class="gate-inner">
+    <h1 class="wordmark"><span>NAVA</span><span>Studio</span></h1>
+    <p>Our portfolio is private. Enter the password you received with our presentation.</p>
+    <form id="gate-form" autocomplete="off">
+      <input type="password" id="pw" placeholder="Password" aria-label="Password" autofocus>
+      <button type="submit">View portfolio</button>
+    </form>
+    <div id="gate-error" class="gate-error" role="alert"></div>
+  </div>
 </section>
 
-<main id="content" class="wrap" hidden>
-  <nav id="topnav" class="topnav" aria-label="Sections"></nav>
-  <div id="gallery"></div>
-</main>
+<div id="site" hidden>
+  <header class="bar">
+    <a class="bar-brand" href="#top">NAVA STUDIO</a>
+    <nav id="nav" aria-label="Sections"></nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <h1 class="wordmark"><span>NAVA</span><span>Studio</span></h1>
+      <div class="hero-lede">
+        <p><strong>3D outsourcing studio for AAA games.</strong> Ships, tanks, aircraft, vehicles, skins, and environments, built to game-ready standards.</p>
+        <a href="mailto:contact@nava3d.net">contact@nava3d.net</a>
+      </div>
+    </section>
+
+    <div id="gallery"></div>
+
+    <section class="contact" id="contact">
+      <div>
+        <h2>Start a project</h2>
+        <p>Send us your brief, references, and deadlines, and we will get back to you with an estimate.</p>
+      </div>
+      <dl>
+        <div><dt>Email</dt><dd><a class="mail" href="mailto:contact@nava3d.net">contact@nava3d.net</a></dd></div>
+        <div><dt>Phone</dt><dd><a href="tel:+13478655716">+1 (347) 865-5716</a></dd></div>
+        <div><dt>Contact person</dt><dd>Anastasiia Petrenko, Project Manager</dd></div>
+      </dl>
+    </section>
+  </main>
+
+  <footer>
+    <span>NAVA Studio, registered LLC in Brooklyn, NY</span>
+    <span>All work shown is for portfolio review only.</span>
+  </footer>
+</div>
 
 <div id="lightbox" class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Image viewer">
+  <div class="lb-stage" data-action="close">
+    <img id="lb-img" src="" alt="" draggable="false">
+  </div>
+  <div class="lb-info"><strong id="lb-title"></strong><span id="lb-count"></span></div>
   <button class="lb-btn lb-close" data-action="close" aria-label="Close">✕</button>
-  <button class="lb-btn lb-prev" data-action="prev" aria-label="Previous">◀</button>
-  <img id="lb-img" src="" alt="" draggable="false">
-  <button class="lb-btn lb-next" data-action="next" aria-label="Next">▶</button>
-  <div class="lb-caption"><span id="lb-title"></span><span id="lb-count" class="count"></span></div>
+  <button class="lb-btn lb-prev" data-action="prev" aria-label="Previous image">‹</button>
+  <button class="lb-btn lb-next" data-action="next" aria-label="Next image">›</button>
 </div>
 
 <script>
@@ -221,14 +397,19 @@
    ДАННЫЕ ПОРТФОЛИО
    Чтобы добавить/убрать работу — правьте только этот список.
    Сетка, навигация и порядок в просмотрщике строятся сами.
+   Превью для сетки берутся из папки thumbs/ (имя файла + .jpg),
+   если превью нет — грузится оригинал.
    ========================================================= */
 const range = (from, to, ext) =>
   Array.from({ length: to - from + 1 }, (_, i) => `${from + i}.${ext}`);
 const shots = (prefix, nums, ext = "jpg") => nums.map(n => `${prefix}${n}.${ext}`);
 
+const HERO = "301.jpg";
+
 const PORTFOLIO = [
   {
     section: "Skins",
+    note: "Premium and event skins for warships",
     projects: [
       { name: "Binah",          images: range(1, 3, "gif") },
       { name: "Corona",         images: range(4, 6, "gif") },
@@ -239,6 +420,7 @@ const PORTFOLIO = [
   },
   {
     section: "Ships",
+    note: "Historically accurate warships, game-ready",
     projects: [
       { name: "Grisha-class corvette (Project 1124)",
         images: [1,2,3,4,5,6,7].map(n => `${n}_1124.jpg`) },
@@ -254,6 +436,7 @@ const PORTFOLIO = [
   },
   {
     section: "Tanks",
+    note: "Armored vehicles from WWII to modern",
     projects: [
       { name: "E-50",          images: shots("E-50_",         [1,2,3,5]) },
       { name: "Su-152",        images: shots("Su-152_",       [1,2,3,5]) },
@@ -267,18 +450,21 @@ const PORTFOLIO = [
   },
   {
     section: "Aircraft",
+    note: "High-detail aircraft with clean topology",
     projects: [
       { name: "Eurofighter Typhoon", images: range(301, 307, "jpg") },
     ],
   },
   {
     section: "Vehicles",
+    note: "Military and civilian vehicles",
     projects: [
       { name: "Collection", images: range(100, 107, "gif") },
     ],
   },
   {
     section: "Environment",
+    note: "Modular buildings and assembled scenes",
     projects: [
       { name: "Collection", images: range(200, 209, "gif") },
     ],
@@ -290,26 +476,35 @@ const PORTFOLIO = [
    ========================================================= */
 const PASSWORD = "NAVA2026";
 const AUTH_KEY = "nava_auth";
-
 const $ = id => document.getElementById(id);
+const thumbOf = src => `thumbs/${src}.jpg`;
+
+// Фон с самолётом: лёгкая версия из thumbs/, иначе оригинал
+(() => {
+  const set = src => document.documentElement.style.setProperty("--hero", `url("${src}")`);
+  const probe = new Image();
+  probe.onload = () => set(thumbOf(HERO));
+  probe.onerror = () => set(HERO);
+  probe.src = thumbOf(HERO);
+})();
 
 function unlock() {
-  $("login").hidden = true;
-  $("content").hidden = false;
+  $("gate").hidden = true;
+  $("site").hidden = false;
   buildGallery();
 }
 
-$("login-form").addEventListener("submit", e => {
+$("gate-form").addEventListener("submit", e => {
   e.preventDefault();
-  const box = $("login");
-  if ($("pw").value === PASSWORD) {
+  const box = $("gate");
+  if ($("pw").value.trim() === PASSWORD) {
     try { sessionStorage.setItem(AUTH_KEY, "1"); } catch (_) {}
     unlock();
   } else {
-    $("login-error").textContent = "Incorrect password";
-    box.classList.remove("shake");
-    void box.offsetWidth; // перезапуск анимации
-    box.classList.add("shake");
+    $("gate-error").textContent = "Wrong password. To request access, email contact@nava3d.net.";
+    box.querySelector(".gate-inner").classList.remove("shake");
+    void box.offsetWidth;
+    box.querySelector(".gate-inner").classList.add("shake");
     $("pw").select();
   }
 });
@@ -319,78 +514,106 @@ try { if (sessionStorage.getItem(AUTH_KEY) === "1") unlock(); } catch (_) {}
 /* =========================================================
    ГАЛЕРЕЯ
    ========================================================= */
-const flat = []; // [{ src, title }] — общий порядок для просмотрщика
+const flat = [];
 let built = false;
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
 
-function slug(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "-"); }
+function makeImg(src, alt) {
+  const img = document.createElement("img");
+  img.alt = alt;
+  img.loading = "lazy";
+  img.decoding = "async";
+  img.draggable = false;
+  img.addEventListener("load", () => img.classList.add("ready"));
+  img.addEventListener("error", () => {
+    if (img.dataset.fallback) return;
+    img.dataset.fallback = "1";
+    img.src = src;
+  });
+  img.src = thumbOf(src);
+  return img;
+}
+
+// Раскладка без пустых ячеек: крупный первый кадр + ряды по 3, либо ровная сетка
+function layoutFor(n) {
+  if (n >= 4 && (n - 1) % 3 === 0) return "feature";
+  if (n % 4 === 0) return "";
+  if (n % 3 === 0) return "c3";
+  if (n % 2 === 0) return "c2";
+  return "c3";
+}
 
 function buildGallery() {
   if (built) return;
   built = true;
-
-  const nav = $("topnav");
+  const nav = $("nav");
   const gallery = $("gallery");
-  const navFrag = document.createDocumentFragment();
-  const galFrag = document.createDocumentFragment();
 
-  PORTFOLIO.forEach(({ section, projects }) => {
+  PORTFOLIO.forEach(({ section, note, projects }) => {
     const id = slug(section);
+    const total = projects.reduce((n, p) => n + p.images.length, 0);
 
     const link = document.createElement("a");
     link.href = `#${id}`;
     link.textContent = section;
-    navFrag.appendChild(link);
+    nav.appendChild(link);
 
-    const card = document.createElement("section");
-    card.className = "card";
-    card.id = id;
-    card.innerHTML = `<h2 class="section-title">${section}</h2>`;
+    const chapter = document.createElement("section");
+    chapter.className = "chapter";
+    chapter.id = id;
+    const isCollection = projects.length === 1 && projects[0].name === "Collection";
+    const count = isCollection ? plural(total, "image") : plural(projects.length, "project");
+    chapter.innerHTML = `
+      <div class="chapter-head">
+        <h2 class="chapter-title">${section}</h2>
+        <p class="chapter-meta">${note}. ${count}</p>
+      </div>`;
 
     projects.forEach(({ name, images }) => {
       const project = document.createElement("div");
       project.className = "project";
-      project.innerHTML = `<h3 class="project-name">${name}</h3>`;
+      const title = name === "Collection" ? section : name;
+      if (name !== "Collection") {
+        project.innerHTML = `<h3 class="project-name">${name}</h3>`;
+      }
 
       const grid = document.createElement("div");
-      grid.className = "grid";
+      grid.className = "grid " + layoutFor(images.length);
 
       images.forEach((src, i) => {
         const index = flat.length;
-        const title = projects.length > 1 || name !== "Collection" ? name : section;
         flat.push({ src, title });
-
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "thumb";
         btn.dataset.index = index;
-        btn.setAttribute("aria-label", `${title} — image ${i + 1}`);
-
-        const img = document.createElement("img");
-        img.src = src;
-        img.alt = `${title} ${i + 1}`;
-        img.loading = "lazy";
-        img.decoding = "async";
-        img.draggable = false;
-
-        btn.appendChild(img);
+        btn.setAttribute("aria-label", `Open ${title}, image ${i + 1}`);
+        btn.appendChild(makeImg(src, `${title} ${i + 1}`));
         grid.appendChild(btn);
       });
 
       project.appendChild(grid);
-      card.appendChild(project);
+      chapter.appendChild(project);
     });
 
-    galFrag.appendChild(card);
+    gallery.appendChild(chapter);
   });
 
-  nav.appendChild(navFrag);
-  gallery.appendChild(galFrag);
-
-  // Один обработчик на всю галерею вместо сотни onclick
   gallery.addEventListener("click", e => {
     const t = e.target.closest(".thumb");
     if (t) openLightbox(+t.dataset.index);
   });
+
+  // Подсветка текущего раздела в навигации
+  const links = [...nav.querySelectorAll("a")];
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      links.forEach(a => a.classList.toggle("active", a.getAttribute("href") === `#${en.target.id}`));
+    });
+  }, { rootMargin: "-40% 0px -55% 0px" });
+  document.querySelectorAll(".chapter").forEach(c => io.observe(c));
 }
 
 /* =========================================================
@@ -404,14 +627,13 @@ let lastFocus = null;
 function show(i) {
   current = (i + flat.length) % flat.length;
   const { src, title } = flat[current];
-  lbImg.src = src;
+  lbImg.src = thumbOf(src);          // сразу показываем лёгкое превью
+  const full = new Image();
+  full.onload = () => { if (flat[current].src === src) lbImg.src = src; };
+  full.src = src;                    // и подменяем на оригинал, когда загрузится
   lbImg.alt = title;
   $("lb-title").textContent = title;
-  $("lb-count").textContent = `${current + 1} / ${flat.length}`;
-  // предзагрузка соседних кадров
-  [current - 1, current + 1].forEach(n => {
-    new Image().src = flat[(n + flat.length) % flat.length].src;
-  });
+  $("lb-count").textContent = `${current + 1} of ${flat.length}`;
 }
 
 function openLightbox(i) {
@@ -429,14 +651,19 @@ function closeLightbox() {
   if (lastFocus) lastFocus.focus();
 }
 
-lb.addEventListener("click", e => {
-  const action = e.target.closest("[data-action]")?.dataset.action;
-  if (action === "prev") return show(current - 1);
-  if (action === "next") return show(current + 1);
-  if (action === "close" || e.target === lb) closeLightbox();
+lbImg.addEventListener("error", () => {
+  const src = flat[current].src;
+  if (!lbImg.src.endsWith(src)) lbImg.src = src;
 });
 
-// Свайпы на телефоне
+lb.addEventListener("click", e => {
+  const action = e.target.closest("[data-action]")?.dataset.action;
+  if (e.target === lbImg) return;
+  if (action === "prev") return show(current - 1);
+  if (action === "next") return show(current + 1);
+  if (action === "close") closeLightbox();
+});
+
 let touchX = null;
 lb.addEventListener("touchstart", e => { touchX = e.touches[0].clientX; }, { passive: true });
 lb.addEventListener("touchend", e => {
@@ -446,29 +673,16 @@ lb.addEventListener("touchend", e => {
   touchX = null;
 });
 
-/* =========================================================
-   КЛАВИАТУРА И ЗАЩИТА ОТ ПРОСТОГО СОХРАНЕНИЯ
-   ========================================================= */
 document.addEventListener("keydown", e => {
   const mod = e.ctrlKey || e.metaKey;
-  if ((mod && e.key.toLowerCase() === "s") ||
-      (mod && e.shiftKey && e.key.toLowerCase() === "i") ||
-      e.key === "F12") {
-    e.preventDefault();
-    return;
-  }
+  if (mod && e.key.toLowerCase() === "s") { e.preventDefault(); return; }
   if (lb.hidden) return;
   if (e.key === "ArrowLeft")  { e.preventDefault(); show(current - 1); }
   if (e.key === "ArrowRight") { e.preventDefault(); show(current + 1); }
   if (e.key === "Escape")     { e.preventDefault(); closeLightbox(); }
 });
-
-document.addEventListener("contextmenu", e => {
-  if (e.target.tagName === "IMG") e.preventDefault();
-});
-document.addEventListener("dragstart", e => {
-  if (e.target.tagName === "IMG") e.preventDefault();
-});
+document.addEventListener("contextmenu", e => { if (e.target.tagName === "IMG") e.preventDefault(); });
+document.addEventListener("dragstart", e => { if (e.target.tagName === "IMG") e.preventDefault(); });
 </script>
 </body>
 </html>
