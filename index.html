@@ -541,20 +541,38 @@ let built = false;
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
 
-function makeImg(src, alt, large) {
+// Облегчённые версии (делает tools/make_previews.py):
+// thumbs/sm — 800px, thumbs — 1280px, view — 2560px. Браузер сам выбирает нужный размер.
+const smallOf = src => `thumbs/sm/${src}.jpg`;
+const viewOf  = src => `view/${src}.jpg`;
+
+function makeImg(src, alt, large, cols) {
   const img = document.createElement("img");
   img.alt = alt;
   img.loading = "lazy";
   img.decoding = "async";
   img.draggable = false;
   img.addEventListener("load", () => img.classList.add("ready"));
-  // Большой кадр: превью 2560px, обычные плитки: 1280px; если файла нет — оригинал
-  const chain = large ? [`thumbs/lg/${src}.jpg`, thumbOf(src), src] : [thumbOf(src), src];
-  let step = 0;
-  img.addEventListener("error", () => { if (++step < chain.length) img.src = chain[step]; });
-  img.src = chain[0];
+  if (large) {
+    img.srcset = `${thumbOf(src)} 1280w, ${viewOf(src)} 2560w`;
+    img.sizes = "100vw";
+  } else {
+    img.srcset = `${smallOf(src)} 800w, ${thumbOf(src)} 1280w`;
+    img.sizes = `(max-width: 640px) 100vw, (max-width: 1024px) 50vw, ${Math.ceil(100 / cols)}vw`;
+  }
+  img.src = thumbOf(src);
+  // Если облегчённой версии нет — грузим оригинал
+  img.addEventListener("error", () => {
+    if (img.dataset.fallback) return;
+    img.dataset.fallback = "1";
+    img.removeAttribute("srcset");
+    img.src = src;
+  });
   return img;
 }
+
+const colsOf = cls =>
+  /f4/.test(cls) ? 4 : /feature|c3/.test(cls) ? 3 : /c2/.test(cls) ? 2 : 4;
 
 // Раскладка без пустых ячеек: крупный первый кадр + ряды по 3, либо ровная сетка
 function layoutFor(n) {
@@ -605,14 +623,14 @@ function buildGallery() {
 
       images.forEach((src, i) => {
         const index = flat.length;
-        flat.push({ src, title });
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "thumb";
         btn.dataset.index = index;
         btn.setAttribute("aria-label", `Open ${title}, image ${i + 1}`);
         const large = i === 0 && grid.classList.contains("feature");
-        const img = makeImg(src, `${title} ${i + 1}`, large);
+        const img = makeImg(src, `${title} ${i + 1}`, large, colsOf(grid.className));
+        flat.push({ src, title, tile: img });
         if (large) img.addEventListener("load", () => {
           if (img.naturalWidth && innerWidth > 640) btn.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
         });
@@ -653,11 +671,16 @@ let lastFocus = null;
 
 function show(i) {
   current = (i + flat.length) % flat.length;
-  const { src, title } = flat[current];
-  lbImg.src = thumbOf(src);          // сразу показываем лёгкое превью
-  const full = new Image();
-  full.onload = () => { if (flat[current].src === src) lbImg.src = src; };
-  full.src = src;                    // и подменяем на оригинал, когда загрузится
+  const { src, title, tile } = flat[current];
+  // Сразу показываем то, что уже загружено в сетке (мгновенно, из кэша)...
+  lbImg.src = (tile && tile.complete && tile.naturalWidth && tile.currentSrc) || thumbOf(src);
+  // ...и подменяем на чёткую версию 2560px (в 5–20 раз легче оригинала)
+  const sharp = new Image();
+  sharp.onload = () => { if (flat[current].src === src) lbImg.src = sharp.src; };
+  sharp.onerror = () => { if (flat[current].src === src) lbImg.src = src; };
+  sharp.src = viewOf(src);
+  // Заранее подгружаем соседние кадры, чтобы листание было без ожидания
+  [1, -1].forEach(d => { new Image().src = viewOf(flat[(current + d + flat.length) % flat.length].src); });
   lbImg.alt = title;
   $("lb-title").textContent = title;
   $("lb-count").textContent = `${current + 1} of ${flat.length}`;
